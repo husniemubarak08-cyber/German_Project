@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unsere Deutschlandreise</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * { font-family: 'Poppins', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: #f8f9fa; color: #333; }
+        
+        /* Eduford-style Hero Section */
+        .hero-section {
+            width: 100%;
+            min-height: 100vh;
+            background-image: linear-gradient(rgba(4, 9, 30, 0.75), rgba(4, 9, 30, 0.75)), url('https://images.unsplash.com/photo-1467269204594-9661b134dd2b?q=80&w=2070&auto=format&fit=crop');
+            background-position: center;
+            background-size: cover;
+            position: relative;
+        }
+
+        /* Navigation Styles */
+        nav { transition: background 0.4s; }
+        .nav-transparent { background: transparent; }
+        .nav-solid { background: #04091e; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .nav-link::after { content: ''; width: 0%; height: 2px; background: #f44336; display: block; margin: auto; transition: 0.5s; }
+        .nav-link:hover::after, .nav-link.active-link::after { width: 100%; }
+
+        /* Transparent Hero Button */
+        .hero-btn {
+            display: inline-block;
+            text-decoration: none;
+            color: #fff;
+            border: 1px solid #fff;
+            padding: 12px 34px;
+            font-size: 13px;
+            background: transparent;
+            position: relative;
+            cursor: pointer;
+            transition: 1s;
+        }
+        .hero-btn:hover { border: 1px solid #f44336; background: #f44336; transition: 1s; }
+
+        /* Page Switcher Logic */
+        .page-section { display: none; animation: fadeIn 0.6s ease-in-out; }
+        .page-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Content Cards */
+        .content-card { background: #fff; border-radius: 10px; box-shadow: 0 0 20px 0px rgba(0,0,0,0.05); transition: 0.3s; }
+        .content-card:hover { box-shadow: 0 0 20px 0px rgba(0,0,0,0.15); transform: translateY(-5px); }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full z-50 nav-transparent py-4 px-6 md:px-16 flex justify-between items-center text-white">
+        <div class="text-2xl font-bold tracking-wide cursor-pointer flex items-center gap-2" onclick="switchPage('home')">
+            <i class="fa-solid fa-graduation-cap text-[#f44336]"></i> ReiseTagebuch
+        </div>
+        <div class="hidden md:flex space-x-8 text-sm font-semibold">
+            <button id="nav-home" onclick="switchPage('home')" class="nav-link active-link uppercase">Startseite</button>
+            <button id="nav-frankfurt" onclick="switchPage('frankfurt')" class="nav-link uppercase">Frankfurt</button>
+            <button id="nav-berlin" onclick="switchPage('berlin')" class="nav-link uppercase">Berlin</button>
+            <button id="nav-munich" onclick="switchPage('munich')" class="nav-link uppercase">München</button>
+            <button id="nav-audio" onclick="switchPage('audio')" class="nav-link uppercase">Hörstation</button>
+        </div>
+    </nav>
+
+    <!-- MAIN PAGE (Landing) -->
+    <main id="home" class="page-section active flex-grow">
+        <div class="hero-section flex flex-col justify-center items-center text-center px-4">
+            <h1 class="text-5xl md:text-7xl font-bold text-white mb-4">Eine Reise nach Deutschland</h1>
+            <p class="text-white text-lg md:text-xl mb-10 italic font-light max-w-2xl">
+                A 7-Day Interactive Journey exploring Frankfurt, Berlin, and Munich. 
+                Creating this website is part of our German language project.
+            </p>
+            <button onclick="switchPage('frankfurt')" class="hero-btn">
+                REISE BEGINNEN <i class="fa-solid fa-arrow-right ml-2"></i>
+            </button>
+        </div>
+    </main>
+
+    <!-- Wrapper for solid background pages -->
+    <div id="content-wrapper" class="hidden flex-grow pt-28 pb-16 px-6 max-w-7xl mx-auto w-full">
+        
+        <!-- FRANKFURT PAGE (Day 1 & 2) -->
+        <main id="frankfurt" class="page-section">
+            <div class="mb-12 text-center">
+                <h2 class="text-4xl font-bold text-[#04091e] mb-2">Tag 1 & 2: Frankfurt am Main</h2>
+                <p class="text-gray-500 italic">Day 1 & 2: Arrival, History & Traditional Food</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div class="bg-gray-200 h-96 rounded-lg flex flex-col items-center justify-center border-2 border-dashed border-gray-400 p-4 text-center">
+                    <i class="fa-solid fa-camera-retro text-4xl text-gray-400 mb-2"></i>
+                    <p class="text-gray-500 font-mono text-sm">[Bild: Römerberg Frankfurt]</p>
+                    <p class="text-gray-400 text-xs mt-2">Insert a photo of the historic Frankfurt town square here</p>
+                </div>
+                <div class="space-y-6">
+                    <div class="content-card p-6 border-l-4 border-[#f44336]">
+                        <h3 class="text-xl font-bold text-[#04091e] mb-2"><i class="fa-solid fa-building-columns text-[#f44336] mr-2"></i>Tag 1: Ankunft & Geschichte</h3>
+                        <p class="text-gray-800">Wir fliegen nach Frankfurt und besuchen den Römerberg. Das ist das historische Zentrum der Stadt mit alten Häusern.</p>
+                        <p class="text-gray-500 italic text-sm mt-1">Day 1: Arrival & History. We fly to Frankfurt and visit the Römerberg. This is the historic center of the city with old houses.</p>
+                    </div>
+                    <div class="content-card p-6 border-l-4 border-[#04091e]">
+                        <h3 class="text-xl font-bold text-[#04091e] mb-2"><i class="fa-solid fa-utensils text-[#04091e] mr-2"></i>Tag 2: Frankfurter Essen</h3>
+                        <p class="text-gray-800">Zum Mittagessen probieren wir Frankfurter Würstchen mit Kartoffelsalat. Danach ruhen wir uns im Hotel aus.</p>
+                        <p class="text-gray-500 italic text-sm mt-1">Day 2: Frankfurt Food. For lunch we try Frankfurt sausages with potato salad. Afterwards we rest in the hotel.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- BERLIN PAGE (Day 3 & 4) -->
+        <main id="berlin" class="page-section">
+            <div class="mb-12 text-center">
+                <h2 class="text-4xl font-bold text-[#04091e] mb-2">Tag 3 & 4: Berlin</h2>
+                <p class="text-gray-500 italic">Day 3 & 4: The Berlin Wall, Monuments & Street Food</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div class="space-y-6">
+                    <div class="content-card p-6 border-l-4 border-[#f44336]">
+                        <h3 class="text-xl font-bold text-[#04091e] mb-2"><i class="fa-solid fa-train text-[#f44336] mr-2"></i>Tag 3: Zugfahrt & Berliner Mauer</h3>
+                        <p class="text-gray-800">Wir fahren mit dem ICE-Zug nach Berlin. Dort sehen wir die berühmte Berliner Mauer. Sie hat sehr viel Geschichte.</p>
+                        <p class="text-gray-500 italic text-sm mt-1">Day 3: Train Ride & Berlin Wall. We travel by ICE train to Berlin. There we see the famous Berlin Wall. It has a lot of history.</p>
+                    </div>
+                    <div class="content-card p-6 border-l-4 border-[#04091e]">
+                        <h3 class="text-xl font-bold text-[#04091e] mb-2"><i class="fa-solid fa-monument text-[#04091e] mr-2"></i>Tag 4: Wahrzeichen & Currywurst</h3>
+                        <p class="text-gray-800">Wir besuchen das Brandenburger Tor. Zum Abendessen gibt es Berliner Currywurst am Straßenstand. Sehr lecker!</p>
+                        <p class="text-gray-500 italic text-sm mt-1">Day 4: Landmarks & Currywurst. We visit the Brandenburg Gate. For dinner there is Berlin Currywurst at a street stand. Very delicious!</p>
+                    </div>
+                </div>
+                <div class="bg-gray-200 h-96 rounded-lg flex flex-col items-center justify-center border-2 border-dashed border-gray-400 p-4 text-center">
+                    <i class="fa-solid fa-camera-retro text-4xl text-gray-400 mb-2"></i>
+                    <p class="text-gray-500 font-mono text-sm">[Bild: Berliner Mauer / Currywurst]</p>
+                    <p class="text-gray-400 text-xs mt-2">Insert a photo of the Berlin Wall or street food here</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- MUNICH PAGE (Day 5, 6 & 7) -->
+        <main id="munich" class="page-section">
+            <div class="mb-12 text-center">
+                <h2 class="text-4xl font-bold text-[#04091e] mb-2">Tag 5, 6 & 7: München & Bayern</h2>
+                <p class="text-gray-500 italic">Day 5, 6 & 7: Bavarian Castles, Pretzels & Departure</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8 items-center mb-8">
+                <div class="bg-gray-200 h-96 rounded-lg flex flex-col items-center justify-center border-2 border-dashed border-gray-400 p-4 text-center">
+                    <i class="fa-solid fa-camera-retro text-4xl text-gray-400 mb-2"></i>
+                    <p class="text-gray-500 font-mono text-sm">[Bild: Schloss Neuschwanstein & Brezel]</p>
+                    <p class="text-gray-400 text-xs mt-2">Insert a photo of the castle and a Bavarian Pretzel here</p>
+                </div>
+                <div class="space-y-6">
+                    <div class="content-card p-6 border-l-4 border-[#f44336]">
+                        <h3 class="text-xl font-bold text-[#04091e] mb-2"><i class="fa-solid fa-beer-mug-empty text-[#f44336] mr-2"></i>Tag 5: Marienplatz & Brezeln</h3>
+                        <p class="text-gray-800">Wir reisen nach München zum Marienplatz. Zur Jause essen wir große bayerische Brezeln.</p>
+                        <p class="text-gray-500 italic text-sm mt-1">Day 5: Marienplatz & Pretzels. We travel to Munich to the Marienplatz. For a snack we eat large Bavarian pretzels.</p>
+                    </div>
+                    <div class="content-card p-6 border-l-4 border-[#04091e]">
+                        <h3 class="text-xl font-bold text-[#04091e] mb-2"><i class="fa-brands fa-fort-awesome text-[#04091e] mr-2"></i>Tag 6: Märchenschloss</h3>
+                        <p class="text-gray-800">Ein Ausflug in die Berge! Das Schloss Neuschwanstein ist alt, märchenhaft und wunderschön.</p>
+                        <p class="text-gray-500 italic text-sm mt-1">Day 6: Fairytale Castle. A trip to the mountains! Neuschwanstein Castle is old, fairytale-like and beautiful.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Day 7 section -->
+            <div class="content-card p-6 border-t-4 border-[#f44336] text-center max-w-3xl mx-auto">
+                <h3 class="text-xl font-bold text-[#04091e] mb-2"><i class="fa-solid fa-plane-departure text-[#f44336] mr-2"></i>Tag 7: Souvenirs und Abreise</h3>
+                <p class="text-gray-800">Wir kaufen Geschenke am Flughafen. Unser Urlaub in Deutschland ist zu Ende. Auf Wiedersehen!</p>
+                <p class="text-gray-500 italic text-sm mt-1">Day 7: Souvenirs and Departure. We buy gifts at the airport. Our vacation in Germany is over. Goodbye!</p>
+            </div>
+        </main>
+
+        <!-- AUDIO PAGE (All 6 Members correctly matched to 7 Days) -->
+        <main id="audio" class="page-section">
+            <div class="mb-12 text-center">
+                <h2 class="text-4xl font-bold text-[#04091e] mb-2">Hörstation <span class="text-[#f44336]">(Audio)</span></h2>
+                <p class="text-gray-500 italic">Scan the QR codes on our 3D model or click play to listen to our team members.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Member 1 -->
+                <div class="content-card p-6 flex flex-col justify-between">
+                    <div class="mb-4">
+                        <span class="bg-[#04091e] text-white text-xs px-2 py-1 rounded">Tag 1</span>
+                        <h4 class="font-bold text-lg mt-2 text-[#04091e]">Ankunft & Geschichte</h4>
+                        <p class="text-[#f44336] font-semibold text-sm">Gesprochen von Husnie Mubarak</p>
+                        <p class="text-gray-400 text-xs italic mt-1">Arrival & History (Frankfurt)</p>
+                    </div>
+                    <button class="w-full border border-[#f44336] text-[#f44336] hover:bg-[#f44336] hover:text-white py-2 rounded transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-play"></i> Play Audio
+                    </button>
+                </div>
+                <!-- Member 2 -->
+                <div class="content-card p-6 flex flex-col justify-between">
+                    <div class="mb-4">
+                        <span class="bg-[#04091e] text-white text-xs px-2 py-1 rounded">Tag 2</span>
+                        <h4 class="font-bold text-lg mt-2 text-[#04091e]">Essen & Hotel</h4>
+                        <p class="text-gray-500 text-sm">Gesprochen von [Teammate 2]</p>
+                        <p class="text-gray-400 text-xs italic mt-1">Food & Hotel (Frankfurt)</p>
+                    </div>
+                    <button class="w-full border border-[#f44336] text-[#f44336] hover:bg-[#f44336] hover:text-white py-2 rounded transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-play"></i> Play Audio
+                    </button>
+                </div>
+                <!-- Member 3 -->
+                <div class="content-card p-6 flex flex-col justify-between">
+                    <div class="mb-4">
+                        <span class="bg-[#04091e] text-white text-xs px-2 py-1 rounded">Tag 3</span>
+                        <h4 class="font-bold text-lg mt-2 text-[#04091e]">Zugfahrt & Mauer</h4>
+                        <p class="text-gray-500 text-sm">Gesprochen von [Teammate 3]</p>
+                        <p class="text-gray-400 text-xs italic mt-1">Train Ride & Wall (Berlin)</p>
+                    </div>
+                    <button class="w-full border border-[#f44336] text-[#f44336] hover:bg-[#f44336] hover:text-white py-2 rounded transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-play"></i> Play Audio
+                    </button>
+                </div>
+                <!-- Member 4 -->
+                <div class="content-card p-6 flex flex-col justify-between">
+                    <div class="mb-4">
+                        <span class="bg-[#04091e] text-white text-xs px-2 py-1 rounded">Tag 4</span>
+                        <h4 class="font-bold text-lg mt-2 text-[#04091e]">Tor & Currywurst</h4>
+                        <p class="text-gray-500 text-sm">Gesprochen von [Teammate 4]</p>
+                        <p class="text-gray-400 text-xs italic mt-1">Landmark & Street Food (Berlin)</p>
+                    </div>
+                    <button class="w-full border border-[#f44336] text-[#f44336] hover:bg-[#f44336] hover:text-white py-2 rounded transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-play"></i> Play Audio
+                    </button>
+                </div>
+                <!-- Member 5 -->
+                <div class="content-card p-6 flex flex-col justify-between">
+                    <div class="mb-4">
+                        <span class="bg-[#04091e] text-white text-xs px-2 py-1 rounded">Tag 5 & 6</span>
+                        <h4 class="font-bold text-lg mt-2 text-[#04091e]">München & Schloss</h4>
+                        <p class="text-gray-500 text-sm">Gesprochen von [Teammate 5]</p>
+                        <p class="text-gray-400 text-xs italic mt-1">Munich & Castle (Bavaria)</p>
+                    </div>
+                    <button class="w-full border border-[#f44336] text-[#f44336] hover:bg-[#f44336] hover:text-white py-2 rounded transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-play"></i> Play Audio
+                    </button>
+                </div>
+                <!-- Member 6 -->
+                <div class="content-card p-6 flex flex-col justify-between">
+                    <div class="mb-4">
+                        <span class="bg-[#04091e] text-white text-xs px-2 py-1 rounded">Tag 7</span>
+                        <h4 class="font-bold text-lg mt-2 text-[#04091e]">Souvenirs & Abreise</h4>
+                        <p class="text-gray-500 text-sm">Gesprochen von [Teammate 6]</p>
+                        <p class="text-gray-400 text-xs italic mt-1">Souvenirs & Departure (Airport)</p>
+                    </div>
+                    <button class="w-full border border-[#f44336] text-[#f44336] hover:bg-[#f44336] hover:text-white py-2 rounded transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-play"></i> Play Audio
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Solid Footer with Updated Team Names -->
+    <footer class="bg-[#04091e] text-white py-12 mt-auto text-center border-t border-gray-800">
+        <h4 class="text-xl font-bold mb-4">Unser Projektteam</h4>
+        
+        <!-- Team Members List -->
+        <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-6 text-gray-300 text-sm font-medium">
+            <span class="text-[#f44336]">Husnie Mubarak (Website Developer)</span>
+            <span>[Teammate 2]</span>
+            <span>[Teammate 3]</span>
+            <span>[Teammate 4]</span>
+            <span>[Teammate 5]</span>
+            <span>[Teammate 6]</span>
+        </div>
+
+        <p class="text-gray-400 text-sm mb-4">B.Tech Computer Science and Engineering Core</p>
+        <p class="text-[#f44336] font-medium text-sm">SRM Institute of Science and Technology, Kattankulathur</p>
+        <p class="text-gray-500 text-xs mt-1">Project Based Learning - German26LCA1004J</p>
+    </footer>
+
+    <!-- JavaScript for Navigation -->
+    <script>
+        function switchPage(pageId) {
+            const navbar = document.getElementById('navbar');
+            const contentWrapper = document.getElementById('content-wrapper');
+            
+            // Hide all pages
+            document.querySelectorAll('.page-section').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+
+            // Reset active link styles
+            document.querySelectorAll('.nav-link').forEach(btn => {
+                btn.classList.remove('active-link');
+            });
+            document.getElementById('nav-' + pageId).classList.add('active-link');
+
+            // Handle the navbar styling (transparent on home, solid on other pages)
+            if (pageId === 'home') {
+                navbar.classList.add('nav-transparent', 'text-white');
+                navbar.classList.remove('nav-solid');
+                contentWrapper.classList.add('hidden'); // Hide the wrapper to let hero take full screen
+            } else {
+                navbar.classList.remove('nav-transparent');
+                navbar.classList.add('nav-solid');
+                contentWrapper.classList.remove('hidden'); // Show the wrapper for solid background pages
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top on page switch
+        }
+        </script>
+        </body>
+        </html>
