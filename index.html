@@ -51,13 +51,44 @@
 </head>
 <body class="flex flex-col min-h-screen text-white">
 
-   <!-- GLOBAL YOUTUBE VIDEO BACKGROUND -->
-    <div style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2; pointer-events: none; overflow: hidden; background-color: #04091e;">
-      <iframe src="https://www.youtube.com/embed/B4ZpRI-hXVA?autoplay=1&mute=1&loop=1&playlist=B4ZpRI-hXVA&controls=0&rel=0&start=55&end=70&playsinline=1" 
-        style="position: absolute; top: 50%; left: 50%; width: 100vw; height: 100vh; transform: translate(-50%, -50%) scale(1.4);" 
-        frameborder="0" allow="autoplay; fullscreen; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-</iframe>
-    </div>
+  <!-- GLOBAL YOUTUBE VIDEO BACKGROUND -->
+<div style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2; pointer-events: none; overflow: hidden; background-color: #04091e;">
+    <div id="bgVideo" style="position: absolute; top: 50%; left: 50%; width: 100vw; height: 100vh; transform: translate(-50%, -50%) scale(1.4);"></div>
+</div>
+
+<script src="https://www.youtube.com/iframe_api"></script>
+<script>
+  const CLIP_START = 4;
+  const CLIP_END = 219;
+  let bgPlayer;
+
+  function onYouTubeIframeAPIReady() {
+    bgPlayer = new YT.Player('bgVideo', {
+      videoId: 'B4ZpRI-hXVA',
+      playerVars: {
+        autoplay: 1, mute: 1, controls: 0, rel: 0,
+        modestbranding: 1, playsinline: 1, disablekb: 1,
+        start: CLIP_START
+      },
+      events: {
+        onReady: (e) => { e.target.mute(); e.target.playVideo(); },
+        onStateChange: (e) => {
+          if (e.data === YT.PlayerState.ENDED) {
+            bgPlayer.seekTo(CLIP_START);
+            bgPlayer.playVideo();
+          }
+        }
+      }
+    });
+
+    // jump back before the end screen ever appears
+    setInterval(() => {
+      if (bgPlayer && bgPlayer.getCurrentTime && bgPlayer.getCurrentTime() >= CLIP_END) {
+        bgPlayer.seekTo(CLIP_START);
+      }
+    }, 500);
+  }
+</script>
 
     <!-- GLOBAL DARK OVERLAY -->
     <div style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(4, 9, 30, 0.7); z-index: -1;"></div>
