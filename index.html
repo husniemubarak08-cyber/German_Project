@@ -53,28 +53,28 @@
 
    <!-- GLOBAL YOUTUBE VIDEO BACKGROUND -->
     <div style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2; pointer-events: none; overflow: hidden; background-color: #04091e;">
-        <iframe src="https://www.youtube.com/embed/B4ZpRI-hXVA?autoplay=1&mute=1&loop=1&playlist=B4ZpRI-hXVA&controls=0&rel=0&start=15&playsinline=1" 
-                style="position: absolute; top: 50%; left: 50%; width: 100vw; height: 100vh; transform: translate(-50%, -50%) scale(1.4);" 
-                frameborder="0" allow="autoplay; fullscreen">
-        </iframe>
+      <iframe src="https://www.youtube.com/embed/B4ZpRI-hXVA?autoplay=1&mute=1&loop=1&playlist=B4ZpRI-hXVA&controls=0&rel=0&start=15&playsinline=1" 
+        style="position: absolute; top: 50%; left: 50%; width: 100vw; height: 100vh; transform: translate(-50%, -50%) scale(1.4);" 
+        frameborder="0" allow="autoplay; fullscreen; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe>
     </div>
 
     <!-- GLOBAL DARK OVERLAY -->
     <div style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(4, 9, 30, 0.7); z-index: -1;"></div>
 
     <!-- Navigation -->
-    <nav id="navbar" class="fixed w-full z-50 nav-transparent py-4 px-6 md:px-16 flex justify-between items-center text-white">
-        <div class="text-2xl font-bold tracking-wide cursor-pointer flex items-center gap-2" onclick="switchPage('home')">
-            <i class="fa-solid fa-graduation-cap text-[#f44336]"></i> ReiseTagebuch
-        </div>
-        <div class="hidden md:flex space-x-8 text-sm font-semibold">
-            <button id="nav-home" onclick="switchPage('home')" class="nav-link active-link uppercase">Startseite</button>
-            <button id="nav-frankfurt" onclick="switchPage('frankfurt')" class="nav-link uppercase">Frankfurt</button>
-            <button id="nav-berlin" onclick="switchPage('berlin')" class="nav-link uppercase">Berlin</button>
-            <button id="nav-munich" onclick="switchPage('munich')" class="nav-link uppercase">München</button>
-            <button id="nav-audio" onclick="switchPage('audio')" class="nav-link uppercase">Hörstation</button>
-        </div>
-    </nav>
+   <nav id="navbar" class="fixed w-full z-50 nav-transparent py-4 px-4 md:px-16 flex flex-wrap justify-between items-center text-white gap-2">
+    <div class="text-xl md:text-2xl font-bold tracking-wide cursor-pointer flex items-center gap-2" onclick="switchPage('home')">
+        <i class="fa-solid fa-graduation-cap text-[#f44336]"></i> ReiseTagebuch
+    </div>
+    <div class="flex flex-wrap items-center gap-1 md:space-x-8 text-xs md:text-sm font-semibold">
+        <button id="nav-home" onclick="switchPage('home')" class="nav-link active-link uppercase px-2 py-1">Startseite</button>
+        <button id="nav-frankfurt" onclick="switchPage('frankfurt')" class="nav-link uppercase px-2 py-1">Frankfurt</button>
+        <button id="nav-berlin" onclick="switchPage('berlin')" class="nav-link uppercase px-2 py-1">Berlin</button>
+        <button id="nav-munich" onclick="switchPage('munich')" class="nav-link uppercase px-2 py-1">München</button>
+        <button id="nav-audio" onclick="switchPage('audio')" class="nav-link uppercase px-2 py-1">Hörstation</button>
+    </div>
+</nav>
 
     <!-- MAIN PAGE (Landing) -->
     <main id="home" class="page-section active flex-grow">
