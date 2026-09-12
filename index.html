@@ -77,16 +77,19 @@
     </nav>
 
     <!-- MAIN PAGE (Landing) -->
-    <main id="home" class="page-section active flex-grow flex flex-col justify-center items-center text-center px-4" style="min-height: 100vh; width: 100%;">
-        <div style="position: relative; z-index: 2; width: 100%;">
-            <h1 class="text-5xl md:text-7xl font-bold text-white mb-4">Eine Reise nach Deutschland</h1>
-            <p class="text-white text-lg md:text-xl mb-10 italic font-light max-w-2xl mx-auto drop-shadow-md">
-                A 7-Day Interactive Journey exploring Frankfurt, Berlin, and Munich. 
-                Creating this website is part of our German language project.
-            </p>
-            <button onclick="switchPage('frankfurt')" class="hero-btn shadow-lg">
-                REISE BEGINNEN <i class="fa-solid fa-arrow-right ml-2"></i>
-            </button>
+    <main id="home" class="page-section active flex-grow">
+        <!-- RESTORED FLEX CONTAINER to fix layout bug -->
+        <div class="flex flex-col justify-center items-center text-center px-4" style="min-height: 100vh; width: 100%;">
+            <div style="position: relative; z-index: 2; width: 100%;">
+                <h1 class="text-5xl md:text-7xl font-bold text-white mb-4">Eine Reise nach Deutschland</h1>
+                <p class="text-white text-lg md:text-xl mb-10 italic font-light max-w-2xl mx-auto drop-shadow-md">
+                    A 7-Day Interactive Journey exploring Frankfurt, Berlin, and Munich. 
+                    Creating this website is part of our German language project.
+                </p>
+                <button onclick="switchPage('frankfurt')" class="hero-btn shadow-lg">
+                    REISE BEGINNEN <i class="fa-solid fa-arrow-right ml-2"></i>
+                </button>
+            </div>
         </div>
     </main>
 
@@ -172,7 +175,6 @@
                     </div>
                 </div>
             </div>
-            <!-- Day 7 section -->
             <div class="content-card p-6 border-t-4 border-[#f44336] text-center max-w-3xl mx-auto">
                 <h3 class="text-xl font-bold text-[#04091e] mb-2"><i class="fa-solid fa-plane-departure text-[#f44336] mr-2"></i>Tag 7: Souvenirs und Abreise</h3>
                 <p class="text-gray-800">Wir kaufen Geschenke am Flughafen. Unser Urlaub in Deutschland ist zu Ende. Auf Wiedersehen!</p>
@@ -269,7 +271,7 @@
         <h4 class="text-xl font-bold mb-4">Unser Projektteam</h4>
         
         <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-6 text-gray-300 text-sm font-medium">
-            <span class="text-[#f44336]">Husnie Mubarak (Team Lead)</span>
+            <span class="text-[#f44336]">Husnie Mubarak (Website Developer)</span>
             <span>[Teammate 2]</span>
             <span>[Teammate 3]</span>
             <span>[Teammate 4]</span>
@@ -300,7 +302,8 @@
             document.querySelectorAll('.nav-link').forEach(btn => {
                 btn.classList.remove('active-link');
             });
-            document.getElementedById('nav-' + pageId).classList.add('active-link');
+            document.getElementById('nav-' + pageId).classList.add('active-link');
+
             // Handle the navbar styling
             if (pageId === 'home') {
                 navbar.classList.add('nav-transparent', 'text-white');
