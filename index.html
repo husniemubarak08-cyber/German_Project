@@ -16,10 +16,32 @@
         .hero-section {
             width: 100%;
             min-height: 100vh;
-            background-image: linear-gradient(rgba(4, 9, 30, 0.75), rgba(4, 9, 30, 0.75)), url('https://images.unsplash.com/photo-1467269204594-9661b134dd2b?q=80&w=2070&auto=format&fit=crop');
-            background-position: center;
-            background-size: cover;
             position: relative;
+            overflow: hidden; /* Keeps the video from stretching the page */
+        }
+
+        /* Dark overlay so the text is readable over the video */
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(4, 9, 30, 0.75), rgba(4, 9, 30, 0.75));
+            z-index: 1;
+        }
+
+        /* The background video */
+        .background-video {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+
+        /* Ensure the text sits on top of the video and overlay */
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
         }
 
         /* Navigation Styles */
@@ -72,15 +94,26 @@
 
     <!-- MAIN PAGE (Landing) -->
     <main id="home" class="page-section active flex-grow">
-        <div class="hero-section flex flex-col justify-center items-center text-center px-4">
-            <h1 class="text-5xl md:text-7xl font-bold text-white mb-4">Eine Reise nach Deutschland</h1>
-            <p class="text-white text-lg md:text-xl mb-10 italic font-light max-w-2xl">
-                A 7-Day Interactive Journey exploring Frankfurt, Berlin, and Munich. 
-                Creating this website is part of our German language project.
-            </p>
-            <button onclick="switchPage('frankfurt')" class="hero-btn">
-                REISE BEGINNEN <i class="fa-solid fa-arrow-right ml-2"></i>
-            </button>
+        <div class="hero-section flex flex-col justify-center items-center text-center">
+            
+            <!-- VIDEO BACKGROUND -->
+            <video autoplay loop muted playsinline class="background-video">
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-aerial-view-of-a-european-city-with-a-river-4148-large.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="hero-overlay"></div>
+
+            <!-- HERO TEXT CONTENT -->
+            <div class="hero-content flex flex-col justify-center items-center px-4">
+                <h1 class="text-5xl md:text-7xl font-bold text-white mb-4">Eine Reise nach Deutschland</h1>
+                <p class="text-white text-lg md:text-xl mb-10 italic font-light max-w-2xl">
+                    A 7-Day Interactive Journey exploring Frankfurt, Berlin, and Munich. 
+                    Creating this website is part of our German language project.
+                </p>
+                <button onclick="switchPage('frankfurt')" class="hero-btn">
+                    REISE BEGINNEN <i class="fa-solid fa-arrow-right ml-2"></i>
+                </button>
+            </div>
         </div>
     </main>
 
@@ -174,7 +207,7 @@
             </div>
         </main>
 
-        <!-- AUDIO PAGE (All 6 Members correctly matched to 7 Days) -->
+        <!-- AUDIO PAGE -->
         <main id="audio" class="page-section">
             <div class="mb-12 text-center">
                 <h2 class="text-4xl font-bold text-[#04091e] mb-2">Hörstation <span class="text-[#f44336]">(Audio)</span></h2>
@@ -282,16 +315,12 @@
         function switchPage(pageId) {
             const navbar = document.getElementById('navbar');
             const contentWrapper = document.getElementById('content-wrapper');
-            
-            // Hide all pages
-            document.querySelectorAll('.page-section').forEach(page => {
-                page.classList.remove('active');
+
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active');
             });
-            
-            // Show selected page
             document.getElementById(pageId).classList.add('active');
 
-            // Reset active link styles
             document.querySelectorAll('.nav-link').forEach(btn => {
                 btn.classList.remove('active-link');
             });
@@ -305,10 +334,10 @@
             } else {
                 navbar.classList.remove('nav-transparent');
                 navbar.classList.add('nav-solid');
-                contentWrapper.classList.remove('hidden'); // Show the wrapper for solid background pages
+                contentWrapper.classList.remove('hidden');
             }
-            window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top on page switch
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-        </script>
-        </body>
-        </html>
+    </script>
+</body>
+</html>
