@@ -10,44 +10,11 @@
     
     <style>
         * { font-family: 'Poppins', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: #f8f9fa; color: #333; }
         
-        /* Eduford-style Hero Section */
-        .hero-section {
-            width: 100%;
-            min-height: 100vh;
-            position: relative;
-            overflow: hidden; /* Keeps the video from stretching the page */
-        }
-
-        /* Dark overlay so the text is readable over the video */
-        .hero-overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(4, 9, 30, 0.75), rgba(4, 9, 30, 0.75));
-            z-index: 1;
-        }
-
-        /* The background video */
-        .background-video {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover;
-            z-index: 0;
-        }
-
-        /* Ensure the text sits on top of the video and overlay */
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            width: 100%;
-            height: 100%;
-        }
-
         /* Navigation Styles */
         nav { transition: background 0.4s; }
         .nav-transparent { background: transparent; }
-        .nav-solid { background: #04091e; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .nav-solid { background: rgba(4, 9, 30, 0.95); backdrop-filter: blur(10px); box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
         .nav-link::after { content: ''; width: 0%; height: 2px; background: #f44336; display: block; margin: auto; transition: 0.5s; }
         .nav-link:hover::after, .nav-link.active-link::after { width: 100%; }
 
@@ -69,14 +36,31 @@
         /* Page Switcher Logic */
         .page-section { display: none; animation: fadeIn 0.6s ease-in-out; }
         .page-section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Content Cards */
-        .content-card { background: #fff; border-radius: 10px; box-shadow: 0 0 20px 0px rgba(0,0,0,0.05); transition: 0.3s; }
-        .content-card:hover { box-shadow: 0 0 20px 0px rgba(0,0,0,0.15); transform: translateY(-5px); }
+        /* Glassmorphism Content Cards */
+        .content-card { 
+            background: rgba(255, 255, 255, 0.92); 
+            backdrop-filter: blur(8px);
+            border-radius: 10px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
+            transition: 0.3s; 
+        }
+        .content-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.3); }
     </style>
 </head>
-<body class="flex flex-col min-h-screen">
+<body class="flex flex-col min-h-screen text-white">
+
+    <!-- GLOBAL YOUTUBE VIDEO BACKGROUND -->
+    <div style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2; pointer-events: none; overflow: hidden; background-color: #04091e;">
+        <iframe src="https://www.youtube.com/embed/ih3a6ggltpk?autoplay=1&mute=1&loop=1&playlist=ih3a6ggltpk&controls=0&rel=0&start=15" 
+                style="position: absolute; top: 50%; left: 50%; width: 100vw; height: 100vh; transform: translate(-50%, -50%) scale(1.4);" 
+                frameborder="0" allow="autoplay; fullscreen">
+        </iframe>
+    </div>
+
+    <!-- GLOBAL DARK OVERLAY -->
+    <div style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(4, 9, 30, 0.7); z-index: -1;"></div>
 
     <!-- Navigation -->
     <nav id="navbar" class="fixed w-full z-50 nav-transparent py-4 px-6 md:px-16 flex justify-between items-center text-white">
@@ -92,53 +76,34 @@
         </div>
     </nav>
 
- <!-- MAIN PAGE (Landing) -->
-    <main id="home" class="page-section active flex-grow">
-        
-        <!-- 1. Container -->
-        <div class="flex flex-col justify-center items-center text-center px-4" style="position: relative; overflow: hidden; min-height: 100vh; width: 100%;">
-            
-           <!-- 2. YOUTUBE VIDEO BACKGROUND (Foolproof Method) -->
-            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; overflow: hidden;">
-                <iframe src="https://www.youtube.com/embed/ih3a6ggltpk?autoplay=1&mute=1&loop=1&playlist=ih3a6ggltpk&controls=0&rel=0&start=15" 
-                        style="position: absolute; top: 50%; left: 50%; width: 100vw; height: 100vh; transform: translate(-50%, -50%) scale(1.4);" 
-                        frameborder="0" allow="autoplay; fullscreen">
-                </iframe>
-            </div>
-
-            <!-- 3. Dark Overlay -->
-            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4, 9, 30, 0.65); z-index: 1;"></div>
-
-            <!-- 4. Text Content -->
-            <div style="position: relative; z-index: 2; width: 100%;">
-                <h1 class="text-5xl md:text-7xl font-bold text-white mb-4">Eine Reise nach Deutschland</h1>
-                <p class="text-white text-lg md:text-xl mb-10 italic font-light max-w-2xl mx-auto">
-                    A 7-Day Interactive Journey exploring Frankfurt, Berlin, and Munich. 
-                    Creating this website is part of our German language project.
-                </p>
-                <button onclick="switchPage('frankfurt')" class="hero-btn">
-                    REISE BEGINNEN <i class="fa-solid fa-arrow-right ml-2"></i>
-                </button>
-            </div>
-            
+    <!-- MAIN PAGE (Landing) -->
+    <main id="home" class="page-section active flex-grow flex flex-col justify-center items-center text-center px-4" style="min-height: 100vh; width: 100%;">
+        <div style="position: relative; z-index: 2; width: 100%;">
+            <h1 class="text-5xl md:text-7xl font-bold text-white mb-4">Eine Reise nach Deutschland</h1>
+            <p class="text-white text-lg md:text-xl mb-10 italic font-light max-w-2xl mx-auto drop-shadow-md">
+                A 7-Day Interactive Journey exploring Frankfurt, Berlin, and Munich. 
+                Creating this website is part of our German language project.
+            </p>
+            <button onclick="switchPage('frankfurt')" class="hero-btn shadow-lg">
+                REISE BEGINNEN <i class="fa-solid fa-arrow-right ml-2"></i>
+            </button>
         </div>
     </main>
 
-
-    <!-- Wrapper for solid background pages -->
-    <div id="content-wrapper" class="hidden flex-grow pt-28 pb-16 px-6 max-w-7xl mx-auto w-full">
+    <!-- Wrapper for solid pages (now floats over the video) -->
+    <div id="content-wrapper" class="hidden flex-grow pt-28 pb-16 px-6 max-w-7xl mx-auto w-full relative z-10">
         
-        <!-- FRANKFURT PAGE (Day 1 & 2) -->
+        <!-- FRANKFURT PAGE -->
         <main id="frankfurt" class="page-section">
-            <div class="mb-12 text-center">
-                <h2 class="text-4xl font-bold text-[#04091e] mb-2">Tag 1 & 2: Frankfurt am Main</h2>
-                <p class="text-gray-500 italic">Day 1 & 2: Arrival, History & Traditional Food</p>
+            <div class="mb-12 text-center text-white drop-shadow-md">
+                <h2 class="text-4xl font-bold mb-2">Tag 1 & 2: Frankfurt am Main</h2>
+                <p class="text-gray-300 italic">Day 1 & 2: Arrival, History & Traditional Food</p>
             </div>
             <div class="grid md:grid-cols-2 gap-8 items-center">
-                <div class="bg-gray-200 h-96 rounded-lg flex flex-col items-center justify-center border-2 border-dashed border-gray-400 p-4 text-center">
-                    <i class="fa-solid fa-camera-retro text-4xl text-gray-400 mb-2"></i>
-                    <p class="text-gray-500 font-mono text-sm">[Bild: Römerberg Frankfurt]</p>
-                    <p class="text-gray-400 text-xs mt-2">Insert a photo of the historic Frankfurt town square here</p>
+                <div class="bg-[rgba(255,255,255,0.85)] backdrop-blur-md h-96 rounded-lg flex flex-col items-center justify-center border-2 border-dashed border-gray-400 p-4 text-center shadow-lg">
+                    <i class="fa-solid fa-camera-retro text-4xl text-gray-600 mb-2"></i>
+                    <p class="text-gray-800 font-mono text-sm font-semibold">[Bild: Römerberg Frankfurt]</p>
+                    <p class="text-gray-600 text-xs mt-2">Insert a photo of the historic Frankfurt town square here</p>
                 </div>
                 <div class="space-y-6">
                     <div class="content-card p-6 border-l-4 border-[#f44336]">
@@ -155,11 +120,11 @@
             </div>
         </main>
 
-        <!-- BERLIN PAGE (Day 3 & 4) -->
+        <!-- BERLIN PAGE -->
         <main id="berlin" class="page-section">
-            <div class="mb-12 text-center">
-                <h2 class="text-4xl font-bold text-[#04091e] mb-2">Tag 3 & 4: Berlin</h2>
-                <p class="text-gray-500 italic">Day 3 & 4: The Berlin Wall, Monuments & Street Food</p>
+            <div class="mb-12 text-center text-white drop-shadow-md">
+                <h2 class="text-4xl font-bold mb-2">Tag 3 & 4: Berlin</h2>
+                <p class="text-gray-300 italic">Day 3 & 4: The Berlin Wall, Monuments & Street Food</p>
             </div>
             <div class="grid md:grid-cols-2 gap-8 items-center">
                 <div class="space-y-6">
@@ -174,25 +139,25 @@
                         <p class="text-gray-500 italic text-sm mt-1">Day 4: Landmarks & Currywurst. We visit the Brandenburg Gate. For dinner there is Berlin Currywurst at a street stand. Very delicious!</p>
                     </div>
                 </div>
-                <div class="bg-gray-200 h-96 rounded-lg flex flex-col items-center justify-center border-2 border-dashed border-gray-400 p-4 text-center">
-                    <i class="fa-solid fa-camera-retro text-4xl text-gray-400 mb-2"></i>
-                    <p class="text-gray-500 font-mono text-sm">[Bild: Berliner Mauer / Currywurst]</p>
-                    <p class="text-gray-400 text-xs mt-2">Insert a photo of the Berlin Wall or street food here</p>
+                <div class="bg-[rgba(255,255,255,0.85)] backdrop-blur-md h-96 rounded-lg flex flex-col items-center justify-center border-2 border-dashed border-gray-400 p-4 text-center shadow-lg">
+                    <i class="fa-solid fa-camera-retro text-4xl text-gray-600 mb-2"></i>
+                    <p class="text-gray-800 font-mono text-sm font-semibold">[Bild: Berliner Mauer / Currywurst]</p>
+                    <p class="text-gray-600 text-xs mt-2">Insert a photo of the Berlin Wall or street food here</p>
                 </div>
             </div>
         </main>
 
-        <!-- MUNICH PAGE (Day 5, 6 & 7) -->
+        <!-- MUNICH PAGE -->
         <main id="munich" class="page-section">
-            <div class="mb-12 text-center">
-                <h2 class="text-4xl font-bold text-[#04091e] mb-2">Tag 5, 6 & 7: München & Bayern</h2>
-                <p class="text-gray-500 italic">Day 5, 6 & 7: Bavarian Castles, Pretzels & Departure</p>
+            <div class="mb-12 text-center text-white drop-shadow-md">
+                <h2 class="text-4xl font-bold mb-2">Tag 5, 6 & 7: München & Bayern</h2>
+                <p class="text-gray-300 italic">Day 5, 6 & 7: Bavarian Castles, Pretzels & Departure</p>
             </div>
             <div class="grid md:grid-cols-2 gap-8 items-center mb-8">
-                <div class="bg-gray-200 h-96 rounded-lg flex flex-col items-center justify-center border-2 border-dashed border-gray-400 p-4 text-center">
-                    <i class="fa-solid fa-camera-retro text-4xl text-gray-400 mb-2"></i>
-                    <p class="text-gray-500 font-mono text-sm">[Bild: Schloss Neuschwanstein & Brezel]</p>
-                    <p class="text-gray-400 text-xs mt-2">Insert a photo of the castle and a Bavarian Pretzel here</p>
+                <div class="bg-[rgba(255,255,255,0.85)] backdrop-blur-md h-96 rounded-lg flex flex-col items-center justify-center border-2 border-dashed border-gray-400 p-4 text-center shadow-lg">
+                    <i class="fa-solid fa-camera-retro text-4xl text-gray-600 mb-2"></i>
+                    <p class="text-gray-800 font-mono text-sm font-semibold">[Bild: Schloss Neuschwanstein & Brezel]</p>
+                    <p class="text-gray-600 text-xs mt-2">Insert a photo of the castle and a Bavarian Pretzel here</p>
                 </div>
                 <div class="space-y-6">
                     <div class="content-card p-6 border-l-4 border-[#f44336]">
@@ -217,9 +182,9 @@
 
         <!-- AUDIO PAGE -->
         <main id="audio" class="page-section">
-            <div class="mb-12 text-center">
-                <h2 class="text-4xl font-bold text-[#04091e] mb-2">Hörstation <span class="text-[#f44336]">(Audio)</span></h2>
-                <p class="text-gray-500 italic">Scan the QR codes on our 3D model or click play to listen to our team members.</p>
+            <div class="mb-12 text-center text-white drop-shadow-md">
+                <h2 class="text-4xl font-bold mb-2">Hörstation <span class="text-[#f44336]">(Audio)</span></h2>
+                <p class="text-gray-300 italic">Scan the QR codes on our 3D model or click play to listen to our team members.</p>
             </div>
 
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -229,7 +194,7 @@
                         <span class="bg-[#04091e] text-white text-xs px-2 py-1 rounded">Tag 1</span>
                         <h4 class="font-bold text-lg mt-2 text-[#04091e]">Ankunft & Geschichte</h4>
                         <p class="text-[#f44336] font-semibold text-sm">Gesprochen von Husnie Mubarak</p>
-                        <p class="text-gray-400 text-xs italic mt-1">Arrival & History (Frankfurt)</p>
+                        <p class="text-gray-500 text-xs italic mt-1">Arrival & History (Frankfurt)</p>
                     </div>
                     <button class="w-full border border-[#f44336] text-[#f44336] hover:bg-[#f44336] hover:text-white py-2 rounded transition flex items-center justify-center gap-2">
                         <i class="fa-solid fa-play"></i> Play Audio
@@ -240,8 +205,8 @@
                     <div class="mb-4">
                         <span class="bg-[#04091e] text-white text-xs px-2 py-1 rounded">Tag 2</span>
                         <h4 class="font-bold text-lg mt-2 text-[#04091e]">Essen & Hotel</h4>
-                        <p class="text-gray-500 text-sm">Gesprochen von [Teammate 2]</p>
-                        <p class="text-gray-400 text-xs italic mt-1">Food & Hotel (Frankfurt)</p>
+                        <p class="text-gray-800 text-sm">Gesprochen von [Teammate 2]</p>
+                        <p class="text-gray-500 text-xs italic mt-1">Food & Hotel (Frankfurt)</p>
                     </div>
                     <button class="w-full border border-[#f44336] text-[#f44336] hover:bg-[#f44336] hover:text-white py-2 rounded transition flex items-center justify-center gap-2">
                         <i class="fa-solid fa-play"></i> Play Audio
@@ -252,8 +217,8 @@
                     <div class="mb-4">
                         <span class="bg-[#04091e] text-white text-xs px-2 py-1 rounded">Tag 3</span>
                         <h4 class="font-bold text-lg mt-2 text-[#04091e]">Zugfahrt & Mauer</h4>
-                        <p class="text-gray-500 text-sm">Gesprochen von [Teammate 3]</p>
-                        <p class="text-gray-400 text-xs italic mt-1">Train Ride & Wall (Berlin)</p>
+                        <p class="text-gray-800 text-sm">Gesprochen von [Teammate 3]</p>
+                        <p class="text-gray-500 text-xs italic mt-1">Train Ride & Wall (Berlin)</p>
                     </div>
                     <button class="w-full border border-[#f44336] text-[#f44336] hover:bg-[#f44336] hover:text-white py-2 rounded transition flex items-center justify-center gap-2">
                         <i class="fa-solid fa-play"></i> Play Audio
@@ -264,8 +229,8 @@
                     <div class="mb-4">
                         <span class="bg-[#04091e] text-white text-xs px-2 py-1 rounded">Tag 4</span>
                         <h4 class="font-bold text-lg mt-2 text-[#04091e]">Tor & Currywurst</h4>
-                        <p class="text-gray-500 text-sm">Gesprochen von [Teammate 4]</p>
-                        <p class="text-gray-400 text-xs italic mt-1">Landmark & Street Food (Berlin)</p>
+                        <p class="text-gray-800 text-sm">Gesprochen von [Teammate 4]</p>
+                        <p class="text-gray-500 text-xs italic mt-1">Landmark & Street Food (Berlin)</p>
                     </div>
                     <button class="w-full border border-[#f44336] text-[#f44336] hover:bg-[#f44336] hover:text-white py-2 rounded transition flex items-center justify-center gap-2">
                         <i class="fa-solid fa-play"></i> Play Audio
@@ -276,8 +241,8 @@
                     <div class="mb-4">
                         <span class="bg-[#04091e] text-white text-xs px-2 py-1 rounded">Tag 5 & 6</span>
                         <h4 class="font-bold text-lg mt-2 text-[#04091e]">München & Schloss</h4>
-                        <p class="text-gray-500 text-sm">Gesprochen von [Teammate 5]</p>
-                        <p class="text-gray-400 text-xs italic mt-1">Munich & Castle (Bavaria)</p>
+                        <p class="text-gray-800 text-sm">Gesprochen von [Teammate 5]</p>
+                        <p class="text-gray-500 text-xs italic mt-1">Munich & Castle (Bavaria)</p>
                     </div>
                     <button class="w-full border border-[#f44336] text-[#f44336] hover:bg-[#f44336] hover:text-white py-2 rounded transition flex items-center justify-center gap-2">
                         <i class="fa-solid fa-play"></i> Play Audio
@@ -288,8 +253,8 @@
                     <div class="mb-4">
                         <span class="bg-[#04091e] text-white text-xs px-2 py-1 rounded">Tag 7</span>
                         <h4 class="font-bold text-lg mt-2 text-[#04091e]">Souvenirs & Abreise</h4>
-                        <p class="text-gray-500 text-sm">Gesprochen von [Teammate 6]</p>
-                        <p class="text-gray-400 text-xs italic mt-1">Souvenirs & Departure (Airport)</p>
+                        <p class="text-gray-800 text-sm">Gesprochen von [Teammate 6]</p>
+                        <p class="text-gray-500 text-xs italic mt-1">Souvenirs & Departure (Airport)</p>
                     </div>
                     <button class="w-full border border-[#f44336] text-[#f44336] hover:bg-[#f44336] hover:text-white py-2 rounded transition flex items-center justify-center gap-2">
                         <i class="fa-solid fa-play"></i> Play Audio
@@ -299,13 +264,12 @@
         </main>
     </div>
 
-    <!-- Solid Footer with Updated Team Names -->
-    <footer class="bg-[#04091e] text-white py-12 mt-auto text-center border-t border-gray-800">
+    <!-- Solid Footer -->
+    <footer class="bg-[rgba(4,9,30,0.95)] backdrop-blur-md text-white py-12 mt-auto text-center border-t border-gray-800 relative z-10">
         <h4 class="text-xl font-bold mb-4">Unser Projektteam</h4>
         
-        <!-- Team Members List -->
         <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-6 text-gray-300 text-sm font-medium">
-            <span class="text-[#f44336]">Husnie Mubarak (Website Developer)</span>
+            <span class="text-[#f44336]">Husnie Mubarak (Team Lead)</span>
             <span>[Teammate 2]</span>
             <span>[Teammate 3]</span>
             <span>[Teammate 4]</span>
@@ -323,22 +287,25 @@
         function switchPage(pageId) {
             const navbar = document.getElementById('navbar');
             const contentWrapper = document.getElementById('content-wrapper');
-
-            document.querySelectorAll('.page-section').forEach(section => {
-                section.classList.remove('active');
+            
+            // Hide all pages
+            document.querySelectorAll('.page-section').forEach(page => {
+                page.classList.remove('active');
             });
+            
+            // Show selected page
             document.getElementById(pageId).classList.add('active');
 
+            // Reset active link styles
             document.querySelectorAll('.nav-link').forEach(btn => {
                 btn.classList.remove('active-link');
             });
-            document.getElementById('nav-' + pageId).classList.add('active-link');
-
-            // Handle the navbar styling (transparent on home, solid on other pages)
+            document.getElementedById('nav-' + pageId).classList.add('active-link');
+            // Handle the navbar styling
             if (pageId === 'home') {
                 navbar.classList.add('nav-transparent', 'text-white');
                 navbar.classList.remove('nav-solid');
-                contentWrapper.classList.add('hidden'); // Hide the wrapper to let hero take full screen
+                contentWrapper.classList.add('hidden');
             } else {
                 navbar.classList.remove('nav-transparent');
                 navbar.classList.add('nav-solid');
