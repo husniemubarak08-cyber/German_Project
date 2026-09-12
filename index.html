@@ -92,34 +92,38 @@
         </div>
     </nav>
 
-   <!-- MAIN PAGE (Landing) -->
-<main id="home" class="page-section active flex-grow">
-    
-    <!-- 1. Container: Must be positioned relatively so the video stays inside it -->
-    <div class="flex flex-col justify-center items-center text-center px-4" style="position: relative; overflow: hidden; min-height: 100vh; width: 100%;">
+ <!-- MAIN PAGE (Landing) -->
+    <main id="home" class="page-section active flex-grow">
         
-        <!-- 2. The Video Tag: Browsers WILL NOT autoplay unless 'muted' is included -->
-        <video autoplay loop muted playsinline style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;">
-            <source src="https://raw.githubusercontent.com/husniemubarak08-cyber/German_Project/main/germany.mp4" type="video/mp4">
-        </video>
+        <!-- 1. Container -->
+        <div class="flex flex-col justify-center items-center text-center px-4" style="position: relative; overflow: hidden; min-height: 100vh; width: 100%;">
+            
+            <!-- 2. YOUTUBE VIDEO BACKGROUND (Foolproof Method) -->
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; overflow: hidden;">
+                <iframe src="https://www.youtube.com/embed/ih3a6ggltpk?autoplay=1&mute=1&loop=1&playlist=ih3a6ggltpk&controls=0&rel=0" 
+                        style="position: absolute; top: 50%; left: 50%; width: 100vw; height: 100vh; transform: translate(-50%, -50%) scale(1.4);" 
+                        frameborder="0" allow="autoplay; fullscreen">
+                </iframe>
+            </div>
 
-        <!-- 3. Dark Overlay: Adds a tint over the video so the white text is readable -->
-        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4, 9, 30, 0.65); z-index: 1;"></div>
+            <!-- 3. Dark Overlay -->
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4, 9, 30, 0.65); z-index: 1;"></div>
 
-        <!-- 4. Text Content: Pushed to the front using z-index: 2 -->
-        <div style="position: relative; z-index: 2; width: 100%;">
-            <h1 class="text-5xl md:text-7xl font-bold text-white mb-4">Eine Reise nach Deutschland</h1>
-            <p class="text-white text-lg md:text-xl mb-10 italic font-light max-w-2xl mx-auto">
-                A 7-Day Interactive Journey exploring Frankfurt, Berlin, and Munich. 
-                Creating this website is part of our German language project.
-            </p>
-            <button onclick="switchPage('frankfurt')" class="hero-btn">
-                REISE BEGINNEN <i class="fa-solid fa-arrow-right ml-2"></i>
-            </button>
+            <!-- 4. Text Content -->
+            <div style="position: relative; z-index: 2; width: 100%;">
+                <h1 class="text-5xl md:text-7xl font-bold text-white mb-4">Eine Reise nach Deutschland</h1>
+                <p class="text-white text-lg md:text-xl mb-10 italic font-light max-w-2xl mx-auto">
+                    A 7-Day Interactive Journey exploring Frankfurt, Berlin, and Munich. 
+                    Creating this website is part of our German language project.
+                </p>
+                <button onclick="switchPage('frankfurt')" class="hero-btn">
+                    REISE BEGINNEN <i class="fa-solid fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+            
         </div>
-        
-    </div>
-</main>
+    </main>
+
 
     <!-- Wrapper for solid background pages -->
     <div id="content-wrapper" class="hidden flex-grow pt-28 pb-16 px-6 max-w-7xl mx-auto w-full">
