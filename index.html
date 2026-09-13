@@ -46,6 +46,7 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
             transition: 0.3s; 
         }
+        
           .content-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.3); }
 
         /* ---------- Mobile fixes ---------- */
@@ -74,13 +75,12 @@
     <div id="bgVideo" style="position: absolute; top: 50%; left: 50%; width: 100vw; height: 100vh; transform: translate(-50%, -50%) scale(1.4);"></div>
 </div>
 
-<script src="https://www.youtube.com/iframe_api"></script>
 <script>
   const CLIP_START = 4;
   const CLIP_END = 219;
   let bgPlayer;
 
-    function createBgPlayer() {
+  function createBgPlayer() {
     bgPlayer = new YT.Player('bgVideo', {
       videoId: 'B4ZpRI-hXVA',
       playerVars: {
@@ -111,7 +111,7 @@
   if (window.YT && window.YT.Player) createBgPlayer();
 </script>
 <script src="https://www.youtube.com/iframe_api"></script>
-
+    
 
     <!-- GLOBAL DARK OVERLAY -->
     <div style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(4, 9, 30, 0.7); z-index: -1;"></div>
@@ -157,18 +157,17 @@
                 <p class="text-gray-300 italic">Day 1 & 2: Arrival, History & Traditional Food</p>
             </div>
             <div class="grid md:grid-cols-2 gap-8 items-center">
-                <div class="bg-[rgba(255,255,255,0.85)] backdrop-blur-md h-96 rounded-lg flex flex-col items-center justify-center border-2 border-dashed border-gray-400 p-4 text-center shadow-lg">
-                    <i class="fa-solid fa-camera-retro text-4xl text-gray-600 mb-2"></i>
-                    <p class="text-gray-800 font-mono text-sm font-semibold">[Bild: Römerberg Frankfurt]</p>
-                    <p class="text-gray-600 text-xs mt-2">Insert a photo of the historic Frankfurt town square here</p>
-                </div>
+              <div class="grid grid-rows-2 gap-6 h-full min-h-[24rem]">
+   <img src="roemerberg.jpg" alt="Römerberg Frankfurt" class="w-full h-full object-cover rounded-lg shadow-lg border border-white/20">
+                            <img src="gruenesosse.jpg" alt="Grüne Soße mit Kartoffeln" class="w-full h-full object-cover rounded-lg shadow-lg border border-white/20">
+</div>
                 <div class="space-y-6">
                     <div class="content-card p-6 border-l-4 border-[#f44336]">
                         <h3 class="text-xl font-bold text-[#04091e] mb-2"><i class="fa-solid fa-building-columns text-[#f44336] mr-2"></i>Tag 1: Ankunft & Geschichte</h3>
                         <p class="text-gray-800">Wir fliegen nach Frankfurt und besuchen den Römerberg. Das ist das historische Zentrum der Stadt mit alten Häusern.</p>
                         <p class="text-gray-500 italic text-sm mt-1">Day 1: Arrival & History. We fly to Frankfurt and visit the Römerberg. This is the historic center of the city with old houses.</p>
                     </div>
-                    <div class="content-card p-6 border-l-4 border-[#04091e]">
+                  <div class="content-card p-6 border-l-4 border-[#04091e]">
     <h3 class="text-xl font-bold text-[#04091e] mb-2"><i class="fa-solid fa-utensils text-[#04091e] mr-2"></i>Tag 2: Frankfurter Essen</h3>
     <p class="text-gray-800">Zum Mittagessen probieren wir Grüne Soße mit Kartoffeln und Eiern. Das ist die berühmte Spezialität aus Frankfurt. Danach ruhen wir uns im Hotel aus.</p>
     <p class="text-gray-500 italic text-sm mt-1">Day 2: Frankfurt Food. For lunch we try Green Sauce with potatoes and eggs. This is the famous speciality from Frankfurt. Afterwards we rest in the hotel.</p>
@@ -190,17 +189,16 @@
                         <p class="text-gray-800">Wir fahren mit dem ICE-Zug nach Berlin. Dort sehen wir die berühmte Berliner Mauer. Sie hat sehr viel Geschichte.</p>
                         <p class="text-gray-500 italic text-sm mt-1">Day 3: Train Ride & Berlin Wall. We travel by ICE train to Berlin. There we see the famous Berlin Wall. It has a lot of history.</p>
                     </div>
-                    <div class="content-card p-6 border-l-4 border-[#04091e]">
+                   <div class="content-card p-6 border-l-4 border-[#04091e]">
     <h3 class="text-xl font-bold text-[#04091e] mb-2"><i class="fa-solid fa-monument text-[#04091e] mr-2"></i>Tag 4: Wahrzeichen & Döner</h3>
     <p class="text-gray-800">Wir besuchen das Brandenburger Tor. Zum Abendessen gibt es Döner Kebab am Straßenstand. Der Döner kommt aus Berlin. Sehr lecker!</p>
     <p class="text-gray-500 italic text-sm mt-1">Day 4: Landmarks & Döner. We visit the Brandenburg Gate. For dinner there is Döner Kebab at a street stand. The Döner comes from Berlin. Very delicious!</p>
 </div>
                 </div>
-                <div class="bg-[rgba(255,255,255,0.85)] backdrop-blur-md h-96 rounded-lg flex flex-col items-center justify-center border-2 border-dashed border-gray-400 p-4 text-center shadow-lg">
-                    <i class="fa-solid fa-camera-retro text-4xl text-gray-600 mb-2"></i>
-                    <p class="text-gray-800 font-mono text-sm font-semibold">[Bild: Berliner Mauer / Currywurst]</p>
-                    <p class="text-gray-600 text-xs mt-2">Insert a photo of the Berlin Wall or street food here</p>
-                </div>
+             <div class="grid grid-rows-2 gap-6 h-full min-h-[24rem]">
+   <img src="mauer.jpg" alt="Berliner Mauer East Side Gallery" class="w-full h-full object-cover rounded-lg shadow-lg border border-white/20">
+                            <img src="doner.jpg" alt="Döner Kebab" class="w-full h-full object-cover rounded-lg shadow-lg border border-white/20">
+</div>
             </div>
         </main>
 
@@ -211,14 +209,13 @@
                 <p class="text-gray-300 italic">Day 5, 6 & 7: Bavarian Castles, Pretzels & Departure</p>
             </div>
             <div class="grid md:grid-cols-2 gap-8 items-center mb-8">
-                <div class="bg-[rgba(255,255,255,0.85)] backdrop-blur-md h-96 rounded-lg flex flex-col items-center justify-center border-2 border-dashed border-gray-400 p-4 text-center shadow-lg">
-                    <i class="fa-solid fa-camera-retro text-4xl text-gray-600 mb-2"></i>
-                    <p class="text-gray-800 font-mono text-sm font-semibold">[Bild: Schloss Neuschwanstein & Brezel]</p>
-                    <p class="text-gray-600 text-xs mt-2">Insert a photo of the castle and a Bavarian Pretzel here</p>
-                </div>
+              <div class="grid grid-rows-2 gap-6 h-full min-h-[24rem]">
+   <img src="brezel.jpg" alt="Bayerische Brezeln in einer Bäckerei" class="w-full h-full object-cover rounded-lg shadow-lg border border-white/20">
+                            <img src="neuschwanstein.jpg" alt="Schloss Neuschwanstein" class="w-full h-full object-cover rounded-lg shadow-lg border border-white/20">
+</div>
                 <div class="space-y-6">
                     <div class="content-card p-6 border-l-4 border-[#f44336]">
-                       <h3 class="text-xl font-bold text-[#04091e] mb-2"><i class="fa-solid fa-bread-slice text-[#f44336] mr-2"></i>Tag 5: Marienplatz & Brezeln</h3>
+                        <h3 class="text-xl font-bold text-[#04091e] mb-2"><i class="fa-solid fa-bread-slice text-[#f44336] mr-2"></i>Tag 5: Marienplatz & Brezeln</h3>
                         <p class="text-gray-800">Wir reisen nach München zum Marienplatz. Zur Jause essen wir große bayerische Brezeln.</p>
                         <p class="text-gray-500 italic text-sm mt-1">Day 5: Marienplatz & Pretzels. We travel to Munich to the Marienplatz. For a snack we eat large Bavarian pretzels.</p>
                     </div>
@@ -273,7 +270,7 @@
             <div class="mb-4">
                 <span class="bg-[#04091e] text-white text-xs px-2 py-1 rounded">Tag 3</span>
                 <h4 class="font-bold text-lg mt-2 text-[#04091e]">Zugfahrt & Mauer</h4>
-                <p class="text-gray-800 text-sm">Gesprochen von Shreya Rai</p>
+                 <p class="text-gray-800 text-sm">Gesprochen von Shreya Rai</p>
                 <p class="text-gray-500 text-xs italic mt-1">Train Ride & Wall (Berlin)</p>
             </div>
             <button class="w-full border border-[#f44336] text-[#f44336] hover:bg-[#f44336] hover:text-white py-2 rounded transition flex items-center justify-center gap-2">
