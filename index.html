@@ -80,7 +80,7 @@
   const CLIP_END = 219;
   let bgPlayer;
 
-  function onYouTubeIframeAPIReady() {
+    function createBgPlayer() {
     bgPlayer = new YT.Player('bgVideo', {
       videoId: 'B4ZpRI-hXVA',
       playerVars: {
@@ -106,7 +106,12 @@
       }
     }, 500);
   }
+  function onYouTubeIframeAPIReady() { createBgPlayer(); }
+
+  if (window.YT && window.YT.Player) createBgPlayer();
 </script>
+<script src="https://www.youtube.com/iframe_api"></script>
+
 
     <!-- GLOBAL DARK OVERLAY -->
     <div style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(4, 9, 30, 0.7); z-index: -1;"></div>
