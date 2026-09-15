@@ -110,6 +110,12 @@
   function onYouTubeIframeAPIReady() { createBgPlayer(); }
 
   if (window.YT && window.YT.Player) createBgPlayer();
+    document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && bgPlayer && bgPlayer.playVideo) {
+      bgPlayer.mute();
+      bgPlayer.playVideo();
+    }
+  });
 </script>
 <script src="https://www.youtube.com/iframe_api"></script>
     
