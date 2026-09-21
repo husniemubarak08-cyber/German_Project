@@ -491,5 +491,134 @@
     card.addEventListener('click', () => card.classList.toggle('show-fact'));
   });
 </script>
+<style>
+  .quiz-card { max-width: 640px; margin: 0 auto; padding: 28px; }
+  .quiz-card:hover { transform: none; }
+  .quiz-progress { color: #6b7280; font-size: 13px; margin-bottom: 8px; }
+  .quiz-question { color: #04091e; font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+  .quiz-translation { color: #6b7280; font-style: italic; font-size: 14px; margin-bottom: 20px; }
+  .quiz-options { display: grid; gap: 10px; }
+  .quiz-option {
+    text-align: left; padding: 12px 16px; font-size: 15px;
+    border: 2px solid #d1d5db; border-radius: 8px;
+    background: #fff; color: #04091e; cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .quiz-option:hover:not(:disabled) { border-color: #f44336; }
+  .quiz-option:disabled { cursor: default; }
+  .quiz-option.correct { background: #dcfce7; border-color: #16a34a; }
+  .quiz-option.wrong { background: #fee2e2; border-color: #dc2626; }
+  .quiz-next {
+    margin-top: 20px; width: 100%; padding: 12px;
+    border-radius: 8px; background: #f44336; color: #fff; font-weight: 600; cursor: pointer;
+  }
+  .quiz-score { font-size: 48px; font-weight: 700; color: #f44336; }
+</style>
+<script>
+  const QUIZ = [
+    { q: "Wo beginnt unsere Reise?", en: "Where does our trip begin?",
+      options: ["In Berlin", "In Frankfurt", "In München", "In Hamburg"], answer: 1 },
+    { q: "Was essen wir in Frankfurt zum Mittagessen?", en: "What do we eat for lunch in Frankfurt?",
+      options: ["Döner Kebab", "Brezeln", "Grüne Soße mit Kartoffeln und Eiern", "Currywurst"], answer: 2 },
+    { q: "Wie fahren wir nach Berlin?", en: "How do we travel to Berlin?",
+      options: ["Mit dem ICE-Zug", "Mit dem Bus", "Mit dem Auto", "Mit dem Flugzeug"], answer: 0 },
+    { q: "Wann fiel die Berliner Mauer?", en: "When did the Berlin Wall fall?",
+      options: ["1961", "1945", "1990", "1989"], answer: 3 },
+    { q: "Welches Wahrzeichen besuchen wir an Tag 4?", en: "Which landmark do we visit on Day 4?",
+      options: ["Das Brandenburger Tor", "Den Kölner Dom", "Den Römerberg", "Das Rathaus Hamburg"], answer: 0 },
+    { q: "Was essen wir in München?", en: "What do we eat in Munich?",
+      options: ["Grüne Soße", "Große bayerische Brezeln", "Pizza", "Döner Kebab"], answer: 1 },
+    { q: "Warum begann das Oktoberfest 1810?", en: "Why did Oktoberfest begin in 1810?",
+      options: ["Für ein Fußballspiel", "Für eine königliche Hochzeit", "Für einen neuen König", "Für das Ende eines Krieges"], answer: 1 },
+    { q: "Welches Schloss besuchen wir an Tag 6?", en: "Which castle do we visit on Day 6?",
+      options: ["Schloss Sanssouci", "Schloss Heidelberg", "Schloss Neuschwanstein", "Schloss Charlottenburg"], answer: 2 },
+    { q: "Was machen wir an Tag 7?", en: "What do we do on Day 7?",
+      options: ["Wir fahren nach Berlin", "Wir besuchen ein Schloss", "Wir essen Grüne Soße", "Wir kaufen Geschenke am Flughafen"], answer: 3 }
+  ];
+
+  // 1. Add a "Quiz" button to the menu, after Hörstation
+  const quizBtn = document.createElement('button');
+  quizBtn.id = 'nav-quiz';
+  quizBtn.className = 'nav-link uppercase px-2 py-1';
+  quizBtn.textContent = 'Quiz';
+  quizBtn.onclick = () => switchPage('quiz');
+  document.getElementById('nav-audio').after(quizBtn);
+
+  // 2. Add the Quiz page after the Hörstation page
+  document.getElementById('content-wrapper').insertAdjacentHTML('beforeend', `
+    <main id="quiz" class="page-section">
+      <div class="mb-12 text-center text-white drop-shadow-md">
+        <h2 class="text-4xl font-bold mb-2">Quiz</h2>
+        <p class="text-gray-300 italic">Hast du gut gelesen? Did you read carefully?</p>
+      </div>
+      <div id="quiz-box" class="content-card quiz-card"></div>
+    </main>`);
+
+  // 3. Make swiping and arrow keys reach the quiz too
+  if (typeof PAGE_ORDER !== 'undefined') PAGE_ORDER.push('quiz');
+
+  // 4. Quiz logic
+  let qIndex = 0;
+  let score = 0;
+
+  function showQuestion() {
+    const item = QUIZ[qIndex];
+    const box = document.getElementById('quiz-box');
+    box.innerHTML = `
+      <p class="quiz-progress">Frage ${qIndex + 1} von ${QUIZ.length}</p>
+      <p class="quiz-question">${item.q}</p>
+      <p class="quiz-translation">${item.en}</p>
+      <div class="quiz-options">
+        ${item.options.map((opt, i) => `<button class="quiz-option" data-i="${i}">${opt}</button>`).join('')}
+      </div>`;
+    box.querySelectorAll('.quiz-option').forEach(btn => {
+      btn.addEventListener('click', () => checkAnswer(btn));
+    });
+  }
+
+  function checkAnswer(btn) {
+    const item = QUIZ[qIndex];
+    const chosen = Number(btn.dataset.i);
+    const buttons = document.querySelectorAll('#quiz-box .quiz-option');
+
+    buttons.forEach(b => b.disabled = true);
+    buttons[item.answer].classList.add('correct');
+    if (chosen === item.answer) score++;
+    else btn.classList.add('wrong');
+
+    const next = document.createElement('button');
+    next.className = 'quiz-next';
+    next.textContent = qIndex < QUIZ.length - 1 ? 'Weiter / Next' : 'Ergebnis zeigen';
+    next.onclick = () => {
+      qIndex++;
+      if (qIndex < QUIZ.length) showQuestion();
+      else showResult();
+    };
+    document.getElementById('quiz-box').appendChild(next);
+  }
+
+  function showResult() {
+    let msg, en;
+    if (score === QUIZ.length) { msg = 'Perfekt! Du hast alles gelesen.'; en = 'Perfect! You read everything.'; }
+    else if (score >= QUIZ.length / 2) { msg = 'Gut gemacht!'; en = 'Well done!'; }
+    else { msg = 'Lies die Seiten noch einmal!'; en = 'Read the pages again!'; }
+
+    document.getElementById('quiz-box').innerHTML = `
+      <div class="text-center">
+        <p class="quiz-progress">Dein Ergebnis</p>
+        <p class="quiz-score">${score} / ${QUIZ.length}</p>
+        <p class="quiz-question">${msg}</p>
+        <p class="quiz-translation">${en}</p>
+        <button class="quiz-next">Nochmal spielen</button>
+      </div>`;
+    document.querySelector('#quiz-box .quiz-next').onclick = () => {
+      qIndex = 0;
+      score = 0;
+      showQuestion();
+    };
+  }
+
+  showQuestion();
+</script>
 </body>
 </html>
