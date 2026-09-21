@@ -457,24 +457,31 @@
   }
   .fact-bubble strong { color: #f44336; }
   .has-fact.show-fact .fact-bubble {
-    max-height: 200px; opacity: 1; padding: 12px 14px; margin-top: 12px;
+    max-height: 400px; opacity: 1; padding: 12px 14px; margin-top: 12px;
   }
   @media (hover: hover) {
     .has-fact:hover .fact-bubble {
-      max-height: 200px; opacity: 1; padding: 12px 14px; margin-top: 12px;
+      max-height: 400px; opacity: 1; padding: 12px 14px; margin-top: 12px;
     }
   }
 </style>
 <script>
   // One history fact per day, from our PPT "History Spotlight"
-  const FACTS = {
-    1: "From 1562 to 1792, Holy Roman Emperors were crowned in Frankfurt Cathedral.",
-    2: "Frankfurter Grüne Soße is made from seven fresh herbs, including borage, parsley and chives.",
-    3: "The Berlin Wall went up on 13 August 1961 and fell on 9 November 1989.",
-    4: "Berlin's Döner grew out of its Turkish community, which began with guest workers who came from 1961.",
-    5: "Oktoberfest began in 1810 to celebrate the wedding of Crown Prince Ludwig and Therese.",
-    6: "Ludwig II began Neuschwanstein in 1869. It opened to visitors just weeks after his death in 1886.",
-    7: "Dachau, near Munich, opened in 1933 as one of the first Nazi concentration camps. US troops liberated it on 29 April 1945."
+   const FACTS = {
+    1: { de: "Von 1562 bis 1792 wurden die Kaiser im Frankfurter Dom gekrönt.",
+         en: "From 1562 to 1792, emperors were crowned in Frankfurt Cathedral." },
+    2: { de: "Die Frankfurter Grüne Soße wird aus sieben frischen Kräutern gemacht.",
+         en: "Frankfurt's Green Sauce is made from seven fresh herbs." },
+    3: { de: "Die Berliner Mauer stand vom 13. August 1961 bis zum 9. November 1989.",
+         en: "The Berlin Wall stood from 13 August 1961 until 9 November 1989." },
+    4: { de: "Der Berliner Döner entstand in der türkischen Gemeinschaft. Ab 1961 kamen viele türkische Gastarbeiter nach Deutschland.",
+         en: "Berlin's Döner grew out of the Turkish community. From 1961, many Turkish guest workers came to Germany." },
+    5: { de: "Das Oktoberfest begann 1810 mit der Hochzeit von Kronprinz Ludwig und Therese.",
+         en: "Oktoberfest began in 1810 with the wedding of Crown Prince Ludwig and Therese." },
+    6: { de: "Ludwig II. begann 1869 mit dem Bau von Neuschwanstein. Wenige Wochen nach seinem Tod 1886 durften Besucher das Schloss sehen.",
+         en: "Ludwig II began building Neuschwanstein in 1869. Visitors were allowed in just weeks after his death in 1886." },
+    7: { de: "Dachau bei München war eines der ersten Konzentrationslager der Nazis (1933). US-Soldaten befreiten es am 29. April 1945.",
+         en: "Dachau near Munich was one of the first Nazi concentration camps (1933). US soldiers liberated it on 29 April 1945." }
   };
 
   document.querySelectorAll('.content-card h3').forEach(h3 => {
@@ -485,7 +492,8 @@
     card.classList.add('has-fact');
     h3.insertAdjacentHTML('beforeend', ' <span class="fact-hint">💡</span>');
     card.insertAdjacentHTML('beforeend',
-      '<div class="fact-bubble"><strong>Wusstest du?</strong> ' + FACTS[match[1]] + '</div>');
+            '<div class="fact-bubble"><strong>Wusstest du?</strong> ' + FACTS[match[1]].de +
+      '<em style="display:block; margin-top:4px; font-size:13px; color:#cbd5e1;">' + FACTS[match[1]].en + '</em></div>');
 
     // Phone: tap to open or close the fact
     card.addEventListener('click', () => card.classList.toggle('show-fact'));
@@ -737,6 +745,156 @@
   // Tap anywhere else or scroll: close the tooltip
   document.addEventListener('click', hideTip);
   window.addEventListener('scroll', hideTip, { passive: true });
+</script>
+<style>
+  /* German clock */
+  .de-clock { margin-top: 28px; font-size: 15px; color: #fff; opacity: 0.9; }
+  .de-clock span { display: block; font-size: 13px; color: #cbd5e1; font-style: italic; margin-top: 2px; }
+
+  /* Flashcards */
+  .flip-grid {
+    display: grid; gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    max-width: 1000px; margin: 0 auto;
+  }
+  .flip-card { height: 150px; perspective: 1000px; cursor: pointer; }
+  .flip-inner {
+    position: relative; width: 100%; height: 100%;
+    transition: transform 0.6s; transform-style: preserve-3d;
+  }
+  .flip-card.flipped .flip-inner { transform: rotateY(180deg); }
+  .flip-front, .flip-back {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center; padding: 16px; border-radius: 10px;
+    font-size: 18px; font-weight: 600;
+    -webkit-backface-visibility: hidden; backface-visibility: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  }
+  .flip-front { background: rgba(255,255,255,0.92); color: #04091e; }
+  .flip-back { background: #f44336; color: #fff; transform: rotateY(180deg); }
+  @media (prefers-reduced-motion: reduce) { .flip-inner { transition: none; } }
+</style>
+<script>
+  /* ============ 1. CONFETTI FOR A PERFECT QUIZ SCORE ============ */
+  function launchConfetti() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const canvas = document.createElement('canvas');
+    canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:200';
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    document.body.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+    const colors = ['#000000', '#DD0000', '#FFCE00', '#f44336', '#ffffff'];   // German flag colours
+    const pieces = Array.from({ length: 150 }, () => ({
+      x: Math.random() * canvas.width,
+      y: -20 - Math.random() * canvas.height * 0.5,
+      w: 6 + Math.random() * 6,
+      h: 8 + Math.random() * 8,
+      vx: -2 + Math.random() * 4,
+      vy: 2 + Math.random() * 4,
+      rot: Math.random() * 360,
+      vr: -8 + Math.random() * 16,
+      color: colors[Math.floor(Math.random() * colors.length)]
+    }));
+    const start = performance.now();
+    function frame(now) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      pieces.forEach(p => {
+        p.x += p.vx; p.y += p.vy; p.vy += 0.05; p.rot += p.vr;
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot * Math.PI / 180);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        ctx.restore();
+      });
+      if (now - start < 4000) requestAnimationFrame(frame);
+      else canvas.remove();
+    }
+    requestAnimationFrame(frame);
+  }
+
+  // Run confetti after the quiz result appears, only for a perfect score
+  if (typeof showResult === 'function') {
+    const originalShowResult = showResult;
+    showResult = function () {
+      originalShowResult();
+      if (score === QUIZ.length) launchConfetti();
+    };
+  }
+
+  /* ============ 2. LIVE GERMAN CLOCK ON THE HOMEPAGE ============ */
+  const clockBox = document.createElement('div');
+  clockBox.className = 'de-clock';
+  document.querySelector('#home .hero-btn').after(clockBox);
+
+  function updateClock() {
+    const now = new Date();
+    const deTime = now.toLocaleTimeString('de-DE', { timeZone: 'Europe/Berlin', hour: '2-digit', minute: '2-digit' });
+    const de  = new Date(now.toLocaleString('en-US', { timeZone: 'Europe/Berlin' }));
+    const ind = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+    const diff = Math.round((ind - de) / 1800000) / 2;   // hours, in half-hour steps
+    clockBox.innerHTML =
+      '🕒 Jetzt in Deutschland: <strong>' + deTime + ' Uhr</strong>' +
+      '<span>Now in Germany · ' + diff + ' hours behind India</span>';
+  }
+  updateClock();
+  setInterval(updateClock, 10000);
+
+  /* ============ 3. FLASHCARDS PAGE ("SÄTZE") ============ */
+  const PHRASES = [
+    { de: "Guten Morgen!", en: "Good morning!" },
+    { de: "Wo ist der Bahnhof?", en: "Where is the train station?" },
+    { de: "Ein Ticket nach Berlin, bitte.", en: "A ticket to Berlin, please." },
+    { de: "Ich hätte gern eine Brezel.", en: "I would like a pretzel." },
+    { de: "Was kostet das?", en: "How much does that cost?" },
+    { de: "Die Rechnung, bitte.", en: "The bill, please." },
+    { de: "Sprechen Sie Englisch?", en: "Do you speak English?" },
+    { de: "Entschuldigung!", en: "Excuse me! / Sorry!" },
+    { de: "Danke schön!", en: "Thank you very much!" }
+  ];
+
+  // Menu button, placed after Hörstation (before Quiz)
+  const phrasesBtn = document.createElement('button');
+  phrasesBtn.id = 'nav-phrases';
+  phrasesBtn.className = 'nav-link uppercase px-2 py-1';
+  phrasesBtn.textContent = 'Sätze';
+  phrasesBtn.onclick = () => switchPage('phrases');
+  document.getElementById('nav-audio').after(phrasesBtn);
+
+  // The page itself, placed before the Quiz page
+  const phrasesHTML = `
+    <main id="phrases" class="page-section">
+      <div class="mb-12 text-center text-white drop-shadow-md">
+        <h2 class="text-4xl font-bold mb-2">Nützliche Sätze</h2>
+        <p class="text-gray-300 italic">Useful phrases · Tippe auf eine Karte (tap a card to flip it)</p>
+      </div>
+      <div class="flip-grid">
+        ${PHRASES.map(p => `
+          <div class="flip-card">
+            <div class="flip-inner">
+              <div class="flip-front">${p.de}</div>
+              <div class="flip-back">${p.en}</div>
+            </div>
+          </div>`).join('')}
+      </div>
+    </main>`;
+  const quizPage = document.getElementById('quiz');
+  if (quizPage) quizPage.insertAdjacentHTML('beforebegin', phrasesHTML);
+  else document.getElementById('content-wrapper').insertAdjacentHTML('beforeend', phrasesHTML);
+
+  // Swipe and arrow keys: put the phrases page before the quiz
+  if (typeof PAGE_ORDER !== 'undefined') {
+    const quizPos = PAGE_ORDER.indexOf('quiz');
+    if (quizPos >= 0) PAGE_ORDER.splice(quizPos, 0, 'phrases');
+    else PAGE_ORDER.push('phrases');
+  }
+
+  // Tap or click a card to flip it
+  document.querySelectorAll('.flip-card').forEach(card => {
+    card.addEventListener('click', () => card.classList.toggle('flipped'));
+  });
 </script>
 </body>
 </html>
