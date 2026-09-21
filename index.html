@@ -66,14 +66,28 @@
             .page-section h2 { font-size: 1.8rem; }
             .page-section .h-96 { height: 14rem; }
         }
-    </style>
+            /* ---------- Video background ---------- */
+        #bg-video-wrap {
+            position: fixed; inset: 0; z-index: -2;
+            overflow: hidden; pointer-events: none;
+            background: #04091e url('roemerberg.jpg') center / cover no-repeat;
+        }
+        #bgVideo {
+            position: absolute; top: 50%; left: 50%;
+            width: max(120vw, 213.34vh);
+            height: max(120vh, 67.5vw);
+            transform: translate(-50%, -50%);
+            opacity: 0; transition: opacity 1.2s ease;
+            border: 0;
+        }
+        #bgVideo.is-playing { opacity: 1; }
     </style>
 </head>
 <body class="flex flex-col min-h-screen text-white">
 
   <!-- GLOBAL YOUTUBE VIDEO BACKGROUND -->
-<div style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2; pointer-events: none; overflow: hidden; background-color: #04091e;">
-    <div id="bgVideo" style="position: absolute; top: 50%; left: 50%; width: 100vw; height: 100vh; transform: translate(-50%, -50%) scale(1.4);"></div>
+<div id="bg-video-wrap">
+    <div id="bgVideo"></div>
 </div>
 
 <script>
@@ -87,11 +101,15 @@
       playerVars: {
         autoplay: 1, mute: 1, controls: 0, rel: 0,
         modestbranding: 1, playsinline: 1, disablekb: 1,
+        fs: 0, iv_load_policy: 3,
         start: CLIP_START
       },
       events: {
         onReady: (e) => { e.target.mute(); e.target.playVideo(); },
         onStateChange: (e) => {
+          if (e.data === YT.PlayerState.PLAYING) {
+            document.getElementById('bgVideo').classList.add('is-playing');
+          }
           if (e.data === YT.PlayerState.ENDED) {
             bgPlayer.seekTo(CLIP_START);
             bgPlayer.playVideo();
@@ -100,21 +118,29 @@
       }
     });
 
-    // jump back before the end screen ever appears
     setInterval(() => {
-      if (bgPlayer && bgPlayer.getCurrentTime && bgPlayer.getCurrentTime() >= CLIP_END) {
-        bgPlayer.seekTo(CLIP_START);
+      if (!bgPlayer || typeof bgPlayer.getCurrentTime !== 'function') return;
+      if (bgPlayer.getCurrentTime() >= CLIP_END) bgPlayer.seekTo(CLIP_START);
+      if (bgPlayer.getPlayerState() === 1) {
+        document.getElementById('bgVideo').classList.add('is-playing');
       }
     }, 500);
   }
   function onYouTubeIframeAPIReady() { createBgPlayer(); }
-
   if (window.YT && window.YT.Player) createBgPlayer();
-    document.addEventListener('visibilitychange', () => {
-    if (!document.hidden && bgPlayer && bgPlayer.playVideo) {
+
+  // Phones that block autoplay: first tap starts the video
+  function kickVideo() {
+    if (!bgPlayer || typeof bgPlayer.getPlayerState !== 'function') return;
+    if (bgPlayer.getPlayerState() !== 1) {
       bgPlayer.mute();
       bgPlayer.playVideo();
     }
+  }
+  document.addEventListener('touchstart', kickVideo, { passive: true });
+  document.addEventListener('click', kickVideo);
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) kickVideo();
   });
 </script>
 <script src="https://www.youtube.com/iframe_api"></script>
