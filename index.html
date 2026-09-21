@@ -620,5 +620,123 @@
 
   showQuestion();
 </script>
+<style>
+  .dict-word {
+    border-bottom: 2px dotted #f44336;
+    cursor: help;
+  }
+  #dict-tip {
+    position: fixed; z-index: 100;
+    max-width: 260px; padding: 6px 12px;
+    background: #04091e; color: #fff;
+    border-radius: 6px; font-size: 14px; line-height: 1.4;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    pointer-events: none;
+    opacity: 0; transition: opacity 0.2s ease;
+  }
+  #dict-tip.visible { opacity: 1; }
+  #dict-tip strong { color: #f44336; }
+</style>
+<script>
+  // German words and their English meaning
+  const DICT = {
+    "fliegen": "to fly",
+    "besuchen": "to visit",
+    "historische": "historic",
+    "Zentrum": "centre",
+    "Häusern": "houses",
+    "Mittagessen": "lunch",
+    "probieren": "to try, to taste",
+    "Kartoffeln": "potatoes",
+    "Eiern": "eggs",
+    "berühmte": "famous",
+    "Spezialität": "speciality",
+    "ruhen": "to rest",
+    "fahren": "to travel (by train, car …)",
+    "Zug": "train",
+    "Mauer": "wall",
+    "Geschichte": "history",
+    "Tor": "gate",
+    "Abendessen": "dinner",
+    "Straßenstand": "street stand",
+    "Imbiss": "snack stand",
+    "erfunden": "invented",
+    "lecker": "tasty",
+    "reisen": "to travel",
+    "Brotzeit": "snack (Bavarian word)",
+    "Jause": "snack",
+    "Brezeln": "pretzels",
+    "bayerische": "Bavarian",
+    "Ausflug": "trip, outing",
+    "Berge": "mountains",
+    "Schloss": "castle",
+    "märchenhaft": "fairytale-like",
+    "wunderschön": "beautiful",
+    "kaufen": "to buy",
+    "Geschenke": "gifts",
+    "Flughafen": "airport",
+    "Urlaub": "holiday, vacation",
+    "Auf Wiedersehen": "goodbye"
+  };
+
+  // 1. Underline the dictionary words in the German text of each day card
+  const LETTERS = 'A-Za-zÄÖÜäöüß';
+  const words = Object.keys(DICT).sort((a, b) => b.length - a.length);
+  const wordRegex = new RegExp('(^|[^' + LETTERS + '])(' + words.join('|') + ')(?![' + LETTERS + '])', 'g');
+
+  document.querySelectorAll('.content-card h3').forEach(h3 => {
+    const germanText = h3.closest('.content-card').querySelector('p.text-gray-800');
+    if (!germanText) return;
+    germanText.innerHTML = germanText.innerHTML.replace(wordRegex,
+      (match, before, word) => before + '<span class="dict-word" data-en="' + DICT[word] + '">' + word + '</span>');
+  });
+
+  // 2. One tooltip that moves to whichever word is active
+  const tip = document.createElement('div');
+  tip.id = 'dict-tip';
+  document.body.appendChild(tip);
+  let activeWord = null;
+
+  function showTip(word) {
+    activeWord = word;
+    tip.innerHTML = '<strong>' + word.textContent + '</strong> = ' + word.dataset.en;
+    tip.classList.add('visible');
+
+    // Position above the word, but keep it inside the screen
+    const r = word.getBoundingClientRect();
+    const w = tip.offsetWidth, h = tip.offsetHeight;
+    let left = r.left + r.width / 2 - w / 2;
+    left = Math.max(8, Math.min(left, window.innerWidth - w - 8));
+    let top = r.top - h - 8;
+    if (top < 8) top = r.bottom + 8;   // not enough room above: show below
+    tip.style.left = left + 'px';
+    tip.style.top = top + 'px';
+  }
+
+  function hideTip() {
+    activeWord = null;
+    tip.classList.remove('visible');
+  }
+
+  const canHover = window.matchMedia('(hover: hover)').matches;
+
+  document.querySelectorAll('.dict-word').forEach(word => {
+    // Laptop: hover
+    if (canHover) {
+      word.addEventListener('mouseenter', () => showTip(word));
+      word.addEventListener('mouseleave', hideTip);
+    }
+    // Phone: tap to open or close
+    word.addEventListener('click', (e) => {
+      e.stopPropagation();   // don't open or close the history fact at the same time
+      if (!canHover && activeWord === word) hideTip();
+      else showTip(word);
+    });
+  });
+
+  // Tap anywhere else or scroll: close the tooltip
+  document.addEventListener('click', hideTip);
+  window.addEventListener('scroll', hideTip, { passive: true });
+</script>
 </body>
 </html>
