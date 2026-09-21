@@ -445,5 +445,51 @@
     }
   }, { passive: true });
 </script>
+<style>
+  .has-fact { cursor: pointer; }
+  .fact-hint { font-size: 0.9em; }
+  .fact-bubble {
+    max-height: 0; overflow: hidden; opacity: 0;
+    padding: 0 14px; margin-top: 0;
+    background: #04091e; color: #fff;
+    border-radius: 8px; font-size: 14px; line-height: 1.5;
+    transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.3s ease, margin 0.3s ease;
+  }
+  .fact-bubble strong { color: #f44336; }
+  .has-fact.show-fact .fact-bubble {
+    max-height: 200px; opacity: 1; padding: 12px 14px; margin-top: 12px;
+  }
+  @media (hover: hover) {
+    .has-fact:hover .fact-bubble {
+      max-height: 200px; opacity: 1; padding: 12px 14px; margin-top: 12px;
+    }
+  }
+</style>
+<script>
+  // One history fact per day, from our PPT "History Spotlight"
+  const FACTS = {
+    1: "From 1562 to 1792, Holy Roman Emperors were crowned in Frankfurt Cathedral.",
+    2: "Frankfurter Grüne Soße is made from seven fresh herbs, including borage, parsley and chives.",
+    3: "The Berlin Wall went up on 13 August 1961 and fell on 9 November 1989.",
+    4: "Berlin's Döner grew out of its Turkish community, which began with guest workers who came from 1961.",
+    5: "Oktoberfest began in 1810 to celebrate the wedding of Crown Prince Ludwig and Therese.",
+    6: "Ludwig II began Neuschwanstein in 1869. It opened to visitors just weeks after his death in 1886.",
+    7: "Dachau, near Munich, opened in 1933 as one of the first Nazi concentration camps. US troops liberated it on 29 April 1945."
+  };
+
+  document.querySelectorAll('.content-card h3').forEach(h3 => {
+    const match = h3.textContent.match(/Tag (\d)/);
+    if (!match || !FACTS[match[1]]) return;
+
+    const card = h3.closest('.content-card');
+    card.classList.add('has-fact');
+    h3.insertAdjacentHTML('beforeend', ' <span class="fact-hint">💡</span>');
+    card.insertAdjacentHTML('beforeend',
+      '<div class="fact-bubble"><strong>Wusstest du?</strong> ' + FACTS[match[1]] + '</div>');
+
+    // Phone: tap to open or close the fact
+    card.addEventListener('click', () => card.classList.toggle('show-fact'));
+  });
+</script>
 </body>
 </html>
