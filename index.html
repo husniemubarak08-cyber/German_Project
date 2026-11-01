@@ -1002,5 +1002,16 @@
     else PAGE_ORDER.push('infos');
   }
 </script>
+    <script>
+  // Open a page directly from the link, e.g. .../#audio
+  function openFromHash() {
+    const h = (location.hash || '').replace('#', '').toLowerCase();
+    if (h && document.getElementById(h) && document.getElementById('nav-' + h)) {
+      switchPage(h);
+    }
+  }
+  openFromHash();
+  window.addEventListener('hashchange', openFromHash);
+</script>
 </body>
 </html>
