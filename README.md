@@ -13,7 +13,7 @@ You can view the live website hosted on GitHub Pages:
 
 ## 👥 Project Team
 * ** Husnie Mubarak** (Team Lead and Website Developer) - B.Tech Computer Science and Engineering Core
-* **Teammates:** Ansh, Abhinav Srivastava, Jansi Sharma, Shreya Rai, Pratyush
+* **Teammates:** Ansh, Abhinav Srivastava, Jansi Sharma, Shreya Rai, Pratyush, Aditya.
 
 ## 🏫 Institution
 **SRM Institute of Science and Technology, Kattankulathur**  
