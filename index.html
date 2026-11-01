@@ -896,5 +896,110 @@
     card.addEventListener('click', () => card.classList.toggle('flipped'));
   });
 </script>
+    <style>
+  .info-en { color: #6b7280; font-style: italic; font-size: 13px; font-weight: 400; }
+  #infos .content-card:hover { transform: none; }
+
+  .plan-row {
+    display: flex; justify-content: space-between; align-items: center; gap: 14px;
+    padding: 12px 0; border-bottom: 1px solid #e5e7eb;
+  }
+  .plan-row:last-child { border-bottom: none; }
+  .plan-tag {
+    display: inline-block; background: #04091e; color: #fff;
+    font-size: 11px; padding: 2px 8px; border-radius: 4px; margin-right: 8px;
+  }
+  .plan-von { color: #04091e; font-size: 15px; }
+  .plan-wie { display: block; color: #6b7280; font-size: 13px; margin-top: 3px; }
+  .plan-dauer { color: #f44336; font-weight: 700; font-size: 14px; white-space: nowrap; }
+
+  .cost-big { font-size: 54px; font-weight: 700; color: #f44336; line-height: 1.1; margin-top: 10px; }
+  .cost-grid {
+    display: grid; gap: 12px; text-align: left;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+  .cost-item {
+    background: #f3f4f6; border-radius: 8px; padding: 12px 14px;
+    border-left: 3px solid #f44336;
+  }
+  .cost-item strong { display: block; color: #04091e; font-size: 15px; margin-bottom: 2px; }
+  .cost-item span { color: #4b5563; font-size: 13px; }
+  .cost-item em { display: block; color: #9ca3af; font-size: 12px; margin-top: 2px; }
+  .cost-note { margin-top: 20px; font-size: 13px; color: #4b5563; line-height: 1.6; }
+  .cost-note strong { color: #04091e; }
+</style>
+<script>
+  const FAHRPLAN = [
+    { tag: "Tag 1",     von: "Flughafen → Frankfurt",  wie: "S-Bahn S8 oder S9",             dauer: "ca. 15 Min." },
+    { tag: "Tag 1 & 2", von: "In Frankfurt",           wie: "U-Bahn, Tram, zu Fuß",          dauer: "zu Fuß" },
+    { tag: "Tag 3",     von: "Frankfurt → Berlin",     wie: "ICE · früh buchen",             dauer: "ca. 4 Std." },
+    { tag: "Tag 3 & 4", von: "In Berlin",              wie: "U-Bahn, S-Bahn · Tageskarte",   dauer: "2 Tage" },
+    { tag: "Tag 5",     von: "Berlin → München",       wie: "ICE · Sitzplatz reservieren",   dauer: "ca. 4 Std." },
+    { tag: "Tag 6",     von: "München → Füssen",       wie: "Zug + Bus · Bayern-Ticket",     dauer: "ca. 2 Std. 10" },
+    { tag: "Tag 7",     von: "München → Flughafen",    wie: "S-Bahn S1 oder S8",             dauer: "ca. 40–45 Min." }
+  ];
+
+  const infosHTML = `
+    <main id="infos" class="page-section">
+      <div class="mb-12 text-center text-white drop-shadow-md">
+        <h2 class="text-4xl font-bold mb-2">Fahrplan & Kosten</h2>
+        <p class="text-gray-300 italic">Timetable & budget · How we travel and what it costs</p>
+      </div>
+
+      <div class="content-card p-6 mb-8" style="max-width:900px;margin:0 auto;">
+        <h3 class="text-xl font-bold text-[#04091e] mb-4">
+          <i class="fa-solid fa-route text-[#f44336] mr-2"></i>Der Fahrplan <span class="info-en">The timetable</span>
+        </h3>
+        ${FAHRPLAN.map(r => `
+          <div class="plan-row">
+            <div>
+              <span class="plan-tag">${r.tag}</span><strong class="plan-von">${r.von}</strong>
+              <span class="plan-wie">${r.wie}</span>
+            </div>
+            <span class="plan-dauer">${r.dauer}</span>
+          </div>`).join('')}
+      </div>
+
+      <div class="content-card p-6 text-center" style="max-width:900px;margin:0 auto;">
+        <h3 class="text-xl font-bold text-[#04091e] mb-1">
+          <i class="fa-solid fa-euro-sign text-[#f44336] mr-2"></i>Was es kostet <span class="info-en">What it costs</span>
+        </h3>
+        <p class="cost-big">€ 1.050</p>
+        <p class="text-gray-800 font-semibold">pro Person für 7 Tage</p>
+        <p class="info-en mb-6">per person for 7 days · mid-range, sharing a double room · excludes international flights</p>
+
+        <div class="cost-grid">
+          <div class="cost-item"><strong>Hotel</strong><span>6 Nächte im Doppelzimmer<em>6 nights, shared double room</em></span></div>
+          <div class="cost-item"><strong>Essen</strong><span>Frühstück, Mittagessen, Abendessen<em>breakfast, lunch and dinner</em></span></div>
+          <div class="cost-item"><strong>Züge</strong><span>2 × ICE und Tageskarten<em>2 ICE trains and local day tickets</em></span></div>
+          <div class="cost-item"><strong>Eintritt</strong><span>Neuschwanstein € 21<em>Neuschwanstein entry · 2026 price</em></span></div>
+        </div>
+
+        <p class="cost-note">
+          <strong>Kostenlos:</strong> Römerberg, East Side Gallery, Mauer-Gedenkstätte, Holocaust-Mahnmal, Reichstagskuppel.<br>
+          <strong>Allein unterwegs?</strong> Etwa € 300–400 mehr für das Hotel.<br>
+          <span class="info-en">All of those are free to enter. Travelling solo costs about €300–400 more for the room. Book the ICE early — on the day it costs far more.</span>
+        </p>
+      </div>
+    </main>`;
+
+  // Menu button, after München
+  const infosBtn = document.createElement('button');
+  infosBtn.id = 'nav-infos';
+  infosBtn.className = 'nav-link uppercase px-2 py-1';
+  infosBtn.textContent = 'Infos';
+  infosBtn.onclick = () => switchPage('infos');
+  document.getElementById('nav-munich').after(infosBtn);
+
+  // The page itself, before the Hörstation
+  document.getElementById('audio').insertAdjacentHTML('beforebegin', infosHTML);
+
+  // Swipe and arrow keys reach it too
+  if (typeof PAGE_ORDER !== 'undefined') {
+    const pos = PAGE_ORDER.indexOf('audio');
+    if (pos >= 0) PAGE_ORDER.splice(pos, 0, 'infos');
+    else PAGE_ORDER.push('infos');
+  }
+</script>
 </body>
 </html>
