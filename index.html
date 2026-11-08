@@ -1013,5 +1013,65 @@
   openFromHash();
   window.addEventListener('hashchange', openFromHash);
 </script>
+    <style>
+  .audio-btn.is-playing { background: #f44336; color: #fff; }
+</style>
+<script>
+  let currentAudio = null;
+  let currentBtn = null;
+  const PLAY_LABEL  = '<i class="fa-solid fa-play"></i> Play Audio';
+  const PAUSE_LABEL = '<i class="fa-solid fa-pause"></i> Pause';
+
+  function setBtn(btn, playing) {
+    if (!btn) return;
+    btn.innerHTML = playing ? PAUSE_LABEL : PLAY_LABEL;
+    btn.classList.toggle('is-playing', playing);
+  }
+
+  function stopAudio() {
+    if (currentAudio) currentAudio.pause();
+    setBtn(currentBtn, false);
+    currentAudio = null;
+    currentBtn = null;
+  }
+
+  function toggleAudio(btn) {
+    if (btn === currentBtn && currentAudio) {        // same button: pause / resume
+      if (currentAudio.paused) { currentAudio.play(); setBtn(btn, true); }
+      else                     { currentAudio.pause(); setBtn(btn, false); }
+      return;
+    }
+    stopAudio();                                     // a different one: stop the old
+    currentAudio = new Audio(btn.dataset.audio);
+    currentBtn = btn;
+    currentAudio.addEventListener('ended', () => setBtn(btn, false));
+    currentAudio.play()
+      .then(() => setBtn(btn, true))
+      .catch(() => {
+        btn.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Audio file missing';
+        currentAudio = null; currentBtn = null;
+        setTimeout(() => setBtn(btn, false), 2500);
+      });
+  }
+
+  // Hook up each Hörstation card to its own file
+  document.querySelectorAll('#audio .content-card').forEach(card => {
+    const badge = card.querySelector('span');
+    const btn   = card.querySelector('button');
+    if (!badge || !btn) return;
+    const m = badge.textContent.trim().match(/Tag\s*([1-7])/i);
+    if (!m) return;
+    btn.classList.add('audio-btn');
+    btn.dataset.audio = 'audio/tag' + m[1] + '.mp3';
+    btn.addEventListener('click', () => toggleAudio(btn));
+  });
+
+  // Stop playing when you leave the Hörstation
+  const originalSwitchPage = switchPage;
+  switchPage = function (pageId) {
+    if (pageId !== 'audio') stopAudio();
+    originalSwitchPage(pageId);
+  };
+</script>
 </body>
 </html>
